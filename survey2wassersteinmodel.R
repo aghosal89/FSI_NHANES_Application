@@ -1,4 +1,5 @@
 
+
 ## This function computes the metrics of model performance utilizing the survey weights
 ## Inputs: 1) formulas          - a character representing the formula for regression
 ##         2) data_analysis_svy - a survey GLM object 
@@ -9,9 +10,11 @@
 ##         3) predicciones      - the prediction of regression model
 ##         4) residuos          - the residuals of the fitted model
 
-survey2wassersteinmodel <- function(formulas= formarest, data_analysis_svy=data_analysis_svy, objetofda= objetofda) {
+
+survey2wassersteinmodel <- function(formulas, data_analysis_svy=data_analysis_svy, objetofda= objetofda) {
   
-  prediciones = matrix(0, nrow= dim(data_analysis_svy$variables)[1], ncol= 500)
+  
+  prediciones = matrix(0, nrow= dim(data_analysis_svy$variables)[1], ncol= 100)
   residuos = prediciones
   
   formulaaux= paste("X", 1, sep="")
@@ -22,9 +25,15 @@ survey2wassersteinmodel <- function(formulas= formarest, data_analysis_svy=data_
   
   m2= svyglm(formulafinal,design=data_analysis_svy, family=stats::gaussian())
   
-  betaj= matrix(0, nrow = length(m2$coefficients), ncol= 500)
+  betaj= matrix(0, nrow = length(m2$coefficients), ncol= 100)
   
-  for(i in 1:500) {
+  #setup parallel backend to use many processors
+  
+  
+  
+  t= proc.time()
+  for(i in 1:100){
+    
     formulaaux= paste("X",i,sep="")
     formulaaux= paste(formulaaux,"~",sep="")
     
@@ -38,6 +47,13 @@ survey2wassersteinmodel <- function(formulas= formarest, data_analysis_svy=data_
     residuos[,i]= aux
     
   }
+  
+  print(t-proc.time())
+  
+  
+  
+  
+  
   
   pesosestandarizados= data_analysis_svy$variables$wtmec4yr_adj_norm
   pesosestandarizados= pesosestandarizados/sum(pesosestandarizados)
