@@ -31,12 +31,9 @@ cuadratico= function(prediciones, cotainferior=-10e-5, cotasuperior=800) {
     q= -prediciones[i,]
     # u, l change
     res <- do.call(osqp::solve_osqp, list(P = P, q = q, 
-              A = A, l = b0, pars = osqp::osqpSettings(verbose = FALSE)))
+                                          A = A, l = b0, pars = osqp::osqpSettings(verbose = FALSE)))
     res= sort(res$x)
     salida[i,]= res
   }
   return(salida)
 }
-
-
-
