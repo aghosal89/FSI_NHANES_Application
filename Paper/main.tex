@@ -1,0 +1,269 @@
+
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with`a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{A new partial linear Fréchet 2-Wasserstein  model with application in predicting distributional physical activity profiles in the complex survey design NHANES}
+\author{You}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+Object-oriented data statistics is a new fascinating field in statistical science that can contribute to new progress in biomedical applications with the development of new formal methods that enrich pieces of information with respect to the analysis of traditional univariate clinical biomarkers. This paper intends to predict the novel and more sophisticated distributional representations of physical activity that introduce clear modeling advantages over traditional summary metrics, providing new information gains. For this purpose, we propose a new lineal single-Index Fréchet model that is fitting over the  US NHANES population study.    The semi-parametric character of the new model allows us to introduce non-linear effects on essential variables such as age that vary in this age from a biological point of view. At the same time, we preserve the interpretability advantages of the linear model in some categorical variables such as race and gender. The results obtained provide new findings that can be useful to refine the politics of public health and explain the differences in all ranges of intensities of accelerometer devices along different subpopulations of the American country in an interpretable way. 
+
+
+
+
+\end{abstract}
+
+
+\section{Introduction}
+
+Medical science is living a golden age with the expansion of the clinical paradigms of digital and precision medicine. In this new context, it is increasingly common to record patient information using complex statistical objects such as probability distributions that lead to an enrichment of the information recorded compared to traditional techniques in predictive terms. Some examples where distributional representations have shown higher performance than other biosensor summary metrics have been in the field of diabetes and physical activity. Roughly speaking, distributional representations allow measurement of the individual's time on each intensity of the monitor. Conceptually, these representations provide potential advantages that allow measuring differences between patients on a continuum of intensity and overcome the limitations of defining cut-off points to categorize patient information that can introduce subjectivity and be highly dependent on the study subpopulation analyzed.   
+
+This work is motivated by the need to describe the factors that characterize the physical activity patterns of the American population recorded with the new distributional representations in the American NHANES database. Significantly, distributional physical activity profiles have been predicted with the global Fréchet model; however, certain variables follow a non-linear relationship. New regression models that allow more general regression models are needed in this context that provides a good balance between linear models and non-parametric models. For example, non-parametric models have disadvantages: the lack of interpretability and convergence rates that require large amounts of data for training. To overcome the gap in this literature and seek a balance in the efficiency of the estimators, we combine the advantages of linear models and non-linear methods and propose the first linear partial Fréchet model based on our previous work Single-Index. A critical point of our analyses is that we introduce the complex NHANES survey design into the model estimation to obtain reproducible and population-based results according to the US structure.  
+
+From a public health point of view, our model is exciting because it allows us to elucidate and interpret the impact of certain variables' modification on the American population's physical activity levels. These can drive to refine and plan some specific health interventions that reduce the gap in the physical inactivity in the different US. subpopulations.
+
+The structure of the paper is as follows. Section $2$ introduces the algorithm's mathematical formulation and a spline-based efficient solving strategy. We then propose a naive bootstrap strategy to obtain confidence intervals in the linear model terms. Section $3$ contains a simulation study to examine the model's empirical performance. Section $4$ describes the NHANES data analyzed and reports the various analyses performed. Finally, Section $5$ discusses the results from a public health perspective, this paper's role in the literature on regression models in metric space, and its opportunities in the medical field with other complex statistical objects. 
+
+
+%La ciencia médica esta viviendo una epoca dorada con la   expansión de los paradígmas clínicos de la medicina digital y de precisión. En este nuevo contexto es que cada vez más frecuente registrar la información de los pacientes mediante objetos estadísticos complejos como distribuciones de probabilidad que conducen a un enriquecimiento de la información registrada respecto a las tecnicas tradicionales en terminos predictivos. Algunos ejemplos donde las representaciones de caracter districucional han mostrado un mayor rendiemiento que otras metricas resumen de biosensores han sido en el campo de la diabetes y la actividad física. Duramente hablando, las representaciones distribucionales permiten medir el tiempo que el indivuduo permenece sobre cada intensidad del monitor. Conceptualmente, estas  representaciones permiten medir las diferencias entre pacientes en un continuo de intensidad y superar las limitaciones de tener que definir puntos de corte para categorizar la información de los pacientes que pueden introducir subjectividad y ser altamente dependiente de la subpoblación de estudio analizada.   
+
+%Este trabajo esta motivado por la necesidad de caracterizar los factores que caracterizan los patrones de actividad física de la población americana registrados con las nuevas representaciones distribucionales en  la base americana de datos del NHANES. Importante, hasta la fecha se han predecido los perfiles distribucionales de la actividad fisica con el modelo global de Fréchet, sin embargo ciertas variables siguen una relación no lineal y nuevos modelos de regresión que permitan modelos de regresión más generales son necesarios en este contexto. Algunas contribuciones han aparecido en el contexto de los modelos no-paramétricos sin embargo presentan ventajas de interpretabilidad y unas tasas de convergencia que reguieren grandes cantidades de datos para su entrenamiento. Para superar este gap en esta literetura y buscar un equilibrio en la eficiencia de los estimadores, combinamos las ventajas de los modelos lineales y de los métodos no lineales ,y  proponemos el primer modelo lineal parcial de Fréchet basado en nuestro trabajo previo del Single-Index. Un punto critico de nuestros análisis es que introducimos en la estimación del modelo el diseño complejo de encuesta del NHANES para obtener resultados reproducibles y de base poblaciones de auerdo a la estructura de Estados Unidos.  
+
+%Desde el punto de vista de salud pública nuestro modelo es muy interesante porque permite elucidar e intepretar el impacto de la modificación de ciertas variables tienen en los niveles de actividad fisica de la población americana. 
+
+%La estructura del paper es como sigue. Seccion $2$ introduce la formulación matemática del algoritmo junto a una estrategia de resolución eficiente basada en el uso de splines. A continuación proponemos una estrategia boostrap naive para obtener intervalos de confianza en los terminos del modelo lineal. Sección $3$ contine un estudio de simulación para examinar el desempeño empírico del modelo. Seccion $4$ describe los datos del NHANES analizados y reporta los distintos análisis realizados. Finalmente Sección $5$ discute los resultados desde el punto de salud publica y el papel que juega este paper en la litera de modelos de regresión en espacios métricos así como las oportunidades que brinde en en el campo médico. 
+
+
+
+
+%Examining the predictive limits of some subset of euclidean predictors to capture  distributional physical activity profiles using 
+
+
+%Physical activity is one of the most successful pharmacological interventions to combat a broad spectrum of diseases and reverse functional decline with age. In this paper, intending to construct a predictive model to explain which factors modify physical activity levels measured with the American population's new distributional representations, we propose a new linear Fréchet model with the geometry induced by the $2$-Wassertein distance. The semi-parametric character of the new Fréchet model allows us to introduce non-linear effects on essential variables such as age while preserving the interpretability advantages of the linear model in some categorical variables such as race and gender. With our results, we have a formal mechanism to help plan more effective public health interventions to avoid inactivity physical behaviors between different strata of the American population by interpreting Euclidean predictors' effect on physical activity levels measured in a more refined way across all intensities recorded with an accelerometer thanks to the new distributional representations. 
+
+
+
+\cite{doi:10.1080/01621459.2020.1844211}
+
+
+
+
+
+
+\section{A rough algorithm}
+Let $i=1,2,...,n$ be the index for observations, each observation represents a patient under study. Let $\omega_i \in (\Omega,d_{W^2})$ be the distribution function of daily activity levels corresponding to the $i^{th}$ patient, where $\Omega$ is the Wasserstein space with the Wasserstein distance $d_{W^2}$. Let $X_i\in \mathcal{R}^p$ be the p-dimensional numerical covariate vector corresponding to the $i^{th}$ patient while $Z_i \in \mathcal{R}^q$ be the categorical covariate vector for the $i^{th}$ patient. Define $Y_i=Q(\omega_i)$ as the quantile function corresponding to the distribution $\omega_i$, we denote $Y_i$'s as $Y_i(t)$'s such that they are quantile functions varying over $t \in [0,1]$, then define the parameters $\alpha(t)\in \mathcal{R}$, $\beta(t) \in \mathcal{R}^q,\theta_0 \in \mathcal{R}^p$ involved in the following model:
+\begin{equation}
+E(Y_i(t)|\theta_0'X_i,Z_i)=\alpha(t) + \beta(t)'Z_i+g(\theta_0'X_i,t),\,\,\forall t\in [0,1],\,\,\forall
+i
+\label{eq:wass_regression_model}
+\end{equation} The link function $g$ is assumed to be smooth, here $\alpha(t)$ is the intercept. For estimating the parameter $\theta_0$, define parameter space $\Theta_p$ for $p>1$: $$\Theta_p=\{\theta\in \mathcal{R}^p: \|\theta\|_E=1, \text{ first non-zero element being strictly positive} \}$$  
+for $u_i=\theta_0'X_i$, we use the global smoother to estimate $g(u_i,t)$ as $$g(u_i,t) \approx \sum_{k=1}^{K+s}\gamma_k(t)\phi_k(u_i)\,\,\forall i$$ where $\{\phi_k\}_{k=1}^{K+s}$ is a basis for splines of order $s$ on a sequence of $K$ knots and $\gamma_k(t)$ are the coefficients of the basis as a function of $t$. Then, define, $u_{k,i}(\theta_0)=\phi_k(\theta_0'X_i)=\phi_k(u_i)$, the regression equation then becomes;
+
+\begin{equation}
+E(Y_i(t)|\theta_0'X_i,Z_i)=\alpha(t)+\beta(t)'Z_i+\gamma(t)'u_i(\theta_0),\,\,\forall i,\forall t
+\label{eq:wass_regression_basis}
+\end{equation} where, $\gamma(t)=\left(\begin{array}{c}
+\gamma_{1}(t) \\
+\vdots \\
+\gamma_{K+s}(t)
+\end{array}\right)$, $u_i(\theta_0)=\left(\begin{array}{c}
+u_{1,i}(\theta_0) \\
+\vdots \\
+u_{K+s,i}(\theta_0)
+\end{array}\right)\,\,\forall i$.
+
+\vspace{1em}
+\underline{\textbf{Estimation of model parameters for a fixed $\theta$:}} For a given $\theta$, consider the given data $(X_i,Z_i,Y_i(t))$ for $t\in [0,1]$, we discuss the estimation of $\alpha_{\theta}(t),\beta_{\theta}(t),\gamma_{\theta}(t)$ using the following equation: $$\left(\hat{\alpha}_{\theta}(t),\hat{\beta}_{\theta}(t), \hat{\gamma}_{\theta}(t)\right)=\underset{a(t)\in \mathcal{R},b(t)\in \mathcal{R}^q,c(t)\in 
+\mathcal{R}^{K+s}}{\operatorname{argmin}}\, \sum_{i=1}^{n}\left[Y_{i}(t)-a(t)-b^{\top}(t) z_{i}-c^{\top}(t) u_{i}(\theta)\right]^{2},\,\,t\in [0,1]$$
+
+Hence we get the estimate: \begin{equation}
+Y_{i}^{*}(\theta, t)=\hat{\alpha}_{\theta}(t)+\hat{\beta}_{\theta}^{\top}(t) X_{i}+\hat{\gamma}_{\theta}^{\top}(t) u_{i}(\theta),\,\, t\in [0,1]
+\label{eq:Yhat_theta_t}
+\end{equation}
+
+Since $Y_i^{*}(\theta,t)$ for varying $t$ may not be a valid quantile function, we project it to the nearest valid quantile function with $L^2$ distance, the projection being $\Tilde{Y}_i(\theta,t)$.
+
+\vspace{1em} \underline{\textbf{Estimation of $\theta$ parameter:}} Next set \begin{equation}
+W_{n}(\theta)=\frac{1}{n} \sum_{i=1}^{n} \int_{0}^{1}\left\{Y_{i}(t)-\tilde{Y}_{i}(\theta, t)\right\}^{2} d t
+\label{eq:W_n_function}
+\end{equation}
+And finally set:
+\begin{equation}
+\hat{\theta}=\underset{\theta\in \Theta_p}{\operatorname{argmin}}\, W_{n}(\theta)
+\label{eq:theta_estimate}
+\end{equation}
+Then for any arbitrary values $x\in \mathcal{R}^p$, $z\in \mathcal{R}^q$ in the data space, we get a fitted value: 
+
+\begin{equation}
+Y^{*}(t)=\alpha_{\hat{\theta}}(t)+\beta_{\hat{\theta}}^{\top}(t) z+\gamma_{\hat{\theta}}^{\top}(t) u^{*}(\hat{\theta})
+\label{eq:Yhat_finally}
+\end{equation}
+
+where $u_{k}^{*}(\hat{\theta})=\phi_{k}\left(\hat{\theta}^{\top} x\right)$. Then taking $\hat{Y}(t)$ by projecting $Y^{*}(t)$ to the nearest monotonically non-decreasing function.
+
+\begin{algorithm}
+\caption{An algorithm to estimate $\theta$.}\label{alg:cap}
+\begin{algorithmic}
+\Require An equidistant grid of length $m$ for $t\in [0,1]$ given by $\{0=t_1,...,t_{m}=1\}$, to be used for quantile functions. Let $j_1\in \{1,...,m\}$ be the index for gridpoints of $t$
+\Require An equidistant grid of length $l$ of starting points for the parameter $\theta$  representing $\Theta_p$ given by $\{\theta_1,...,\theta_l\}$. Let $s\in \{1,2,...,l\}$ be the index representing gridpoints for $\theta$. 
+\Require Response $Y$ as an $n \times m$ matrix whose rows are the quantile functions for the $i^{th}$ patient under study.
+\Require $X_i\in \mathcal{R}^p$, $Z_i\in \mathcal{R}^q$ be respectively the numerical and categorial covariate vectors. 
+\Require The Knot sequence $K$ and the order of B-spline basis function s.
+\State $j_1 \gets 1$
+\State $j_2 \gets 1$
+\While {$j_2 \le l$}
+\State $\theta \gets \theta_{j_2}$
+\While {$j_1 \le m-1$}
+    \State $t \gets t_{j_1}$
+    \State Let $\underset{n\times 1}{Y_{j_1}}=\left[\begin{array}{c}
+    Y_{1,j_1} \\
+    \vdots    \\
+    Y_{n,j_1}
+    \end{array}\right]$ be $j_1^{th}$ column of $Y$ a where $Y_{i,j_1}$ is the $j_1^{th}$ quantile corresponding to $Y_i$. 
+    \State Define the B-spline basis functions $\{\phi_k\}_{k=1}^{K+s}$ and coefficients $\{\gamma_k(t_{j_1})\}_{k=1}^{K+s}$. Define, \gamma(t_{j_1})=\left(\begin{array}{c}
+\gamma_{1}(t_{j_1}) \\
+\vdots \\
+\gamma_{K+s}(t_{j_1})
+\end{array}\right), u_{i}(\theta_{j_2})=\left(\begin{array}{c}
+u_{1, i}(\theta_{j_2}) \\
+\vdots \\
+u_{K+s, i}(\theta_{j_2})
+\end{array}\right)=\left(\begin{array}{c}
+    \phi_1(\theta_{j_2}'X_i)\\
+     \vdots \\
+     \phi_{K+s}(\theta_{j_2}'X_i)
+\end{array}\right)\,\, $\forall i$.
+\vspace{1em}
+\State Then from the following equation $$E(Y_{j_1} \mid X_i, Z_i)=\alpha(t_{j_1})+\beta(t_{j_1})^{\prime} Z_i+\gamma(t_{j_1})^{\prime} u_{i}\left(\theta_{j_2}\right)=\left(\begin{array}{ccccc}
+  \underset{n \times 1}{\textbf{1}} &  \vdots & \underset{n \times q}{Z_i} & \vdots & \underset{n \times (K+s)}{u_i(\theta_{j_2})} \\
+\end{array}\right)\left(\begin{array}{c}
+    \alpha(t_{j_1}) \\ \beta(t_{j_1}) \\ \gamma(t_{j_1})
+      
+\end{array}\right)
+$$ we find the least square estimates $\hat{\alpha}(t_{j_1}),\hat{\beta}(t_{j_1}),\hat{\gamma}(t_{j_1})$.
+\vspace{1em}
+\State Then we get the estimate of the response $Y_i^{*}(\theta_{j_2},t_{j_1})$ using equation \eqref{eq:Yhat_theta_t} above.
+\State Find nearest projection $\tilde{Y}_i(\theta_{j_2},t_{j_1})$ of $Y_i^{*}(\theta_{j_2},t_{j_1})$ by minimizing $L^2$ distance such that the former is a valid quantile function.
+\State Compute the cost function $W_n(\theta_{j_2})$ from equation \eqref{eq:W_n_function} to estimate $\hat{\theta}(\theta_{j_2})$ from equation \eqref{eq:theta_estimate} for the starting point $\theta_{j_2}$.
+\State Finally compute ${Y^*}(t_{j_1})$ from equation \eqref{eq:Yhat_finally} which is again projected to $\Tilde{Y}(t_{j_1})$ nearby valid quantile function by minimizing the $L^2$ distance. 
+\State $j_1 \gets j_1+1$
+
+\EndWhile
+\State $j_2 \gets j_2+1$
+
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{An algorithm to estimate $\theta$.}\label{alg:cap}
+\begin{algorithmic}
+\Require An equidistant grid of of length $m$ for $t\in [0,1]$ given by $\{0=t_1,...,t_{m}=1\}$, to be used for quantile functions. Let $j_1\in \{1,...,m\}$ be the index for gridpoints of $t$.
+\Require A starting point $\theta_s\in \Theta_p$ for the estimation of parameter $\theta \in \Theta_p$. 
+\Require Response $\underset{n \times m}{Y}$ as a matrix whose columns are the quantile functions corresponding to the grid of $t$. Each row of Y represents a patient under study.
+\Require $X_i\in \mathcal{R}^p$, $Z_i\in \mathcal{R}^q$ be respectively the numerical and categorial covariate vectors. 
+\Require The Knot sequence $K$ and the order $s$ of the B-spline basis functions.
+\State $j_1 \gets 1$
+\While {$j_1 \le m-1$}
+    \State $t \gets t_{j_1}$
+    \State Let $\underset{n\times 1}{Y_{j_1}}=\left[\begin{array}{c}
+    Y_{1,j_1} \\
+    \vdots    \\
+    Y_{n,j_1}
+    \end{array}\right]$ be $j_1^{th}$ column of $Y$ where $Y_{i,j_1}$ is the $j_1^{th}$ quantile corresponding to the $i^{th}$ observation (patient or row). 
+    \State Define the B-spline basis functions $\{\phi_k\}_{k=1}^{K+s}$ and coefficients $\{\gamma_k(t_{j_1})\}_{k=1}^{K+s}$. Define, \gamma(t_{j_1})=\left(\begin{array}{c}
+\gamma_{1}(t_{j_1}) \\
+\vdots \\
+\gamma_{K+s}(t_{j_1})
+\end{array}\right), u_{i}(\theta_{s})=\left(\begin{array}{c}
+u_{1, i}(\theta_{s}) \\
+\vdots \\
+u_{K+s, i}(\theta_{s})
+\end{array}\right)=\left(\begin{array}{c}
+    \phi_1(\theta_{s}'X_i)\\
+     \vdots \\
+     \phi_{K+s}(\theta_{s}'X_i)
+\end{array}\right)\,\, $\forall i$.
+\vspace{1em}
+\State Then from the following equation $$E(Y_{j_1} \mid X_i, Z_i)=\alpha(t_{j_1})+\beta(t_{j_1})^{\prime} Z_i+\gamma(t_{j_1})^{\prime} u_{i}\left(\theta_{s}\right)=\left(\begin{array}{ccccc}
+  \underset{n \times 1}{\textbf{1}} &  \vdots & \underset{n \times q}{Z_i} & \vdots & \underset{n \times (K+s)}{u_i(\theta_{s})} \\
+\end{array}\right)\left(\begin{array}{c}
+    \alpha(t_{j_1}) \\ \beta(t_{j_1}) \\ \gamma(t_{j_1})
+      
+\end{array}\right)
+$$ we find the least square estimates $\hat{\alpha}(t_{j_1}),\hat{\beta}(t_{j_1}),\hat{\gamma}(t_{j_1})$.
+\vspace{1em}
+\State Then we get the estimate of the response $Y_i^{*}(\theta_{s},t_{j_1})$ using equation \eqref{eq:Yhat_theta_t} above.
+\State Find nearest projection $\tilde{Y}_i(\theta_{s},t_{j_1})$ of $Y_i^{*}(\theta_{s},t_{j_1})$ by minimizing $L^2$ distance such that the former is a valid quantile function.
+\State Compute the cost function $W_n(\theta_{s})$ from equation \eqref{eq:W_n_function} to estimate $\hat{\theta}(\theta_{s})$ from equation \eqref{eq:theta_estimate} for the starting point $\theta_{s}$.
+\State Finally compute ${Y^*}(t_{j_1})$ from equation \eqref{eq:Yhat_finally} which is again projected to $\Tilde{Y}(t_{j_1})$ nearby valid quantile function by minimizing the $L^2$ distance. 
+\State $j_1 \gets j_1+1$
+
+\EndWhile
+
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+
+
+%\bibliographystyle{alpha}
+%\bibliography{sample}
+
+
+
+\cite{ghosal2021fr}
+
+
+
+\section{Proposal abstract Marcos}
+
+
+Examining the predictive limits of some subset of euclidean predictors to capture  distributional physical activity profiles using a new partial linear Fréchet model in the NHANES database
+
+
+Physical activity is one of the most successful pharmacological interventions to combat a broad spectrum of diseases and reverse functional decline with age. In this paper, intending to construct a predictive model to explain which factors modify physical activity levels measured with the American population's new distributional representations, we propose a new linear Fréchet model with the geometry induced by the $2$-Wassertein distance. The semi-parametric character of the new Fréchet model allows us to introduce non-linear effects on essential variables such as age while preserving the interpretability advantages of the linear model in some categorical variables such as race and gender. With our results, we have a formal mechanism to help plan more effective public health interventions to avoid inactivity physical behaviors between different strata of the American population by interpreting Euclidean predictors' effect on physical activity levels measured in a more refined way across all intensities recorded with an accelerometer thanks to the new distributional representations. 
+
+
+
+\section{Marcos comments literature}
+
+\begin{itemize}
+    \item  Unique paper new NHANES dataset 2011-2014 \cite{00005768-202111000-00026} 
+    \item  Basic accelerometer NHANES papers \cite{leroux2019organizing}
+    
+    \item  Novel accelerometer paper \cite{LeGoallec2021.06.21.21259265}
+    
+    \item Distributional representations papers \cite{matabuena2021distributional,ghosal2021scalar,ghosal2021distributional}
+    
+    \item Survey regression models
+    
+    \cite{10.1214/16-STS605}
+    
+\end{itemize}
+
+ 
+
+\bibliographystyle{unsrt}
+\bibliography{sample}
+
+\end{document}
