@@ -22,7 +22,7 @@
     
             This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in 
             (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the reverse operation of the 'cart2polar' 
-            function above. This 
+            function above.
 
     Inputs: 
     
@@ -34,7 +34,28 @@
             cartesian coordinates in p-dimensional space.
     
   - wn_cost.R
-    [Description: This file computes the Wn function in the equation 9 in the main document]
+
+    Description: 
+    
+            This is the cost function for estimating the index parameter obtained from equation 9 in the main document.
+
+    Inputs:
+    
+            1. et          : index parameter in polar coordinates
+            2. datosfda    : an nxm matrix as the response whose each row represents an observation, each column 
+                             represents a quantile, t from [0,1].
+            3. datosx      : a data frame with n rows whose columns include the covariates for the model as well as the
+                             variables for survey design.
+            5. linear_vars : the names of the p covariates for the linear part of model included in datosx.
+            6. si_vars     : the names of the q covariates for the SI part of model included in datosx.
+            7. tt          : the equidistant grid on [0,1] of length m.
+            8. sp          : the degree of polynomial considered for spline regression.
+            9. dfs         : degrees of freedom as an alternative to specifying the knots.
+
+  Output:
+  
+            the mean square prediction error as a function of the Index parameter.
+            
   - survey2wassersteinmodel.R
   - cudratico.R
   - adj_fr_r2.R
