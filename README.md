@@ -9,6 +9,7 @@
     [Description: This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius.
     
     Inputs: 1) eta  - a (p-1) dimensional vector
+            
             2) r    - radius of the polar coordinates (set default, r=1)
     
     Output:         - cartesian coordinates in p-dimension.]
