@@ -138,6 +138,12 @@ First create a folder in your computer and keep it as the working directory for 
                           the starting points in the lattice will be utilized. Otherwise, L of these will be 
                           chosen by row number. If L = -1, the user will have to input a matrix whose rows are 
                           the starting points.
+         7. etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization 
+                          for estimating theta. This is input only if L=-1 
+         9. datosx      : the dataset of n whose columns include the covariates, survey variables of the model.
+         10. sp         : order of spline.
+         11. dfs         : degrees of freedem of the spline.
+
     
     Outputs:
     
