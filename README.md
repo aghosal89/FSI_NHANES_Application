@@ -2,7 +2,7 @@
 
 1. First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the following files from this repository, in no particular order. 
 
-  - cart2polar.R
+ - cart2polar.R
     
             Description: This function computes polar coordinates from the cartesian coordinates in p-dimensional euclidean 
             space for the dimensions 2, 3, 4, 5.
@@ -16,7 +16,7 @@
             1) r   : the radius of the polar coordinates.
             2) eta : the vector of polar coordinates with length (p-1).
 
-  - polar2cart.R
+ - polar2cart.R
 
     Description: 
     
