@@ -29,6 +29,7 @@
             1) eta : a (p-1) dimensional vector
             2) r   : radius of the polar coordinates (set default, r=1)
     
+    
     Output:         
             
             cartesian coordinates in p-dimensional space.
@@ -52,7 +53,8 @@
             8. sp          : the degree of polynomial considered for spline regression.
             9. dfs         : degrees of freedom as an alternative to specifying the knots.
 
-  Output:
+  
+     Output:
   
             the mean square prediction error as a function of the Index parameter.
             
