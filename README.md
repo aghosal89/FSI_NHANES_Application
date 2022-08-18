@@ -34,6 +34,43 @@
             
             cartesian coordinates in p-dimensional space.
     
+  - cudratico.R
+    
+    Description: 
+    
+            This function projects the model predictions into space of quantiles, the L^2 - Wasserstein space by solving 
+            a linear programing problem. 
+    
+    Inputs:
+    
+            1. prediciones  - model predictions of the GLM.
+            2. cotainferior - lower limit of the quantiles
+            3. cotasuperior - upper limit of the quantiles
+    
+    Output:
+    
+            a matrix of same dimension as the input matrix prediciones, of which the rows are projected onto the space of quantiles.
+    
+  - survey2wassersteinmodel.R
+
+    Description:
+    
+           This function computes the performance metrics, estimates parameters, residuals of the model utilizing the 
+           survey design proposed by NHANES. 
+           
+    Inputs: 
+    
+           1) formula           : a character representing the formula for regression
+           2) data_analysis_svy : a survey GLM object 
+           3) objectofda        : the functional data representation of the response quantiles
+
+    Outputs:
+   
+           1) r^2           : the R^2 of the fitted model
+           2) betaj         : beta coefficients of the fitted regression model
+           3) predicciones  : the prediction of regression model
+           4) residuos      : the residuals of the fitted model
+    
   - wn_cost.R
 
     Description: 
@@ -58,27 +95,6 @@
   
             the mean square prediction error as a function of the Index parameter.
             
-  - survey2wassersteinmodel.R
-
-    Description:
-    
-           This function computes the performance metrics, estimates parameters, residuals of the model utilizing the 
-           survey design proposed by NHANES. 
-           
-    Inputs: 
-    
-           1) formula           : a character representing the formula for regression
-           2) data_analysis_svy : a survey GLM object 
-           3) objectofda        : the functional data representation of the response quantiles
-
-    Outputs:
-   
-           1) r^2           : the R^2 of the fitted model
-           2) betaj         : beta coefficients of the fitted regression model
-           3) predicciones  : the prediction of regression model
-           4) residuos      : the residuals of the fitted model
-    
-  - cudratico.R
   - adj_fr_r2.R
   - PLFSI_model.R
   - spline_variation.R
