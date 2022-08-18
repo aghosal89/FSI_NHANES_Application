@@ -112,12 +112,39 @@ First create a folder in your computer and keep it as the working directory for 
     Output 
     
          A list contaning the Fréchet R-squared and adjusted Fréchet R-squared.
-         
-         
+        
   - ### PLFSI_model.R
+
+    Description: 
+    
+         This function fits the partially-linear Frechet Single Index model to the distributional responses.
+         
+    Sourcing: 
+    
+         The files 'wn_cost.R', 'polar2cart.R', 'cart2polar.R', 'survey2wassersteinmodel.R', 'cuadratico.R' 
+         have to be sourced prior to running the codes in this script.
+         
+    Inputs:
+    
+         1. tt          : length m grid spanning [0, 1], used as grid for quantile functions.
+         2. datosfda    : nxm matrix of response quantile functions on grid tt.
+         3. si_vars     : An p-vector of variables' names to be considered in the Single Index part.
+         4. linear_vars : An q-vector of variables' names to be considered in the linear part.
+         5. nsp         : integer giving the number of starting points in each dimension to be used by optim. A 
+                          lattice of points will be created by constructing an equally spaced grid for each of 
+                          the (p - 1) hyperspherical coordinates used to represent theta in the optimization. 
+                          Default is 3.
+         6. L           : a list of integers specifying which starting points to use. If L = 0 (default), all of 
+                          the starting points in the lattice will be utilized. Otherwise, L of these will be 
+                          chosen by row number. If L = -1, the user will have to input a matrix whose rows are 
+                          the starting points.
+    
+    Outputs:
+    
+    
   - ### spline_variation.R
-  - AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
-  - AnalysisAge30to50_with_BMXWAIST_HEI_wTAC.Rmd
+  - ### AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
+  - ### AnalysisAge30to50_with_BMXWAIST_HEI_wTAC.Rmd
 
 
 
