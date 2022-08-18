@@ -96,6 +96,20 @@
             the mean square prediction error as a function of the Index parameter.
             
   - adj_fr_r2.R
+
+   Description: 
+   
+   Inputs:  
+   
+           1. qin   :  an nxm matrix whose rows are the quantiles corresponding to a distribution
+           2. qpred :  an nxm matrix whose rows are predicted quantiles for the Y above. 
+           3. tt    :  an equidistant grid of points on [0,1] of length m for quantiles.
+           4. q     :  number of covariates in the model.
+           
+    Output 
+    
+         A list contaning the Fréchet R-squared and adjusted Fréchet R-squared.
+         
   - PLFSI_model.R
   - spline_variation.R
   - AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
