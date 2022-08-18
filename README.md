@@ -8,7 +8,7 @@
             
     Input:
     
-            x      : is the cartesian coordinate, p-dimensional vector of reals.
+            cartesian coordinates in p-dimensional space.
              
     Outputs:  
     
@@ -25,13 +25,13 @@
 
     Inputs: 
     
-            1) eta  - a (p-1) dimensional vector
+            1) eta : a (p-1) dimensional vector
             
-            2) r    - radius of the polar coordinates (set default, r=1)
+            2) r   : radius of the polar coordinates (set default, r=1)
     
     Output:         
             
-            cartesian coordinates in p-dimension.
+            cartesian coordinates in p-dimensional space.
     
   - wn_cost.R
     [Description: This file computes the Wn function in the equation 9 in the main document]
