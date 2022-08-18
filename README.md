@@ -6,7 +6,9 @@
     [Description: It computes the the polar coordinates of the corresponding cartesian coordinates for the dimensions 2, 3, 4, 5]
   - polar2cart.R
 
-    [Description: This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius.
+    Description: 
+    
+            This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius.
     
     Inputs: 
     
@@ -16,7 +18,7 @@
     
     Output:         
             
-            cartesian coordinates in p-dimension.]
+            cartesian coordinates in p-dimension.
     
   - wn_cost.R
     [Description: This file computes the Wn function in the equation 9 in the main document]
