@@ -54,11 +54,30 @@
             9. dfs         : degrees of freedom as an alternative to specifying the knots.
 
   
-     Output:
+    Output:
   
             the mean square prediction error as a function of the Index parameter.
             
   - survey2wassersteinmodel.R
+
+    Description:
+    
+           This function computes the performance metrics, estimates parameters, residuals of the model utilizing the 
+           survey design proposed by NHANES. 
+           
+    Inputs: 
+    
+           1) formula           : a character representing the formula for regression
+           2) data_analysis_svy : a survey GLM object 
+           3) objectofda        : the functional data representation of the response quantiles
+
+    Outputs:
+   
+           1) r^2           : the R^2 of the fitted model
+           2) betaj         : beta coefficients of the fitted regression model
+           3) predicciones  : the prediction of regression model
+           4) residuos      : the residuals of the fitted model
+    
   - cudratico.R
   - adj_fr_r2.R
   - PLFSI_model.R
