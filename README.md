@@ -4,7 +4,8 @@
 
   - cart2polar.R
     
-            Description: This function computes polar coordinates from the cartesian coordinates in p-dimensional euclidean space for the dimensions 2, 3, 4, 5.
+            Description: This function computes polar coordinates from the cartesian coordinates in p-dimensional euclidean 
+            space for the dimensions 2, 3, 4, 5.
             
     Input:
     
@@ -26,7 +27,6 @@
     Inputs: 
     
             1) eta : a (p-1) dimensional vector
-            
             2) r   : radius of the polar coordinates (set default, r=1)
     
     Output:         
