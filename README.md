@@ -4,7 +4,7 @@
 
 First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the following files from this repository, in no particular order. 
 
- - cart2polar.R
+ - ### cart2polar.R
     
             Description: This function computes polar coordinates from the cartesian coordinates in p-dimensional euclidean 
             space for the dimensions 2, 3, 4, 5.
@@ -18,7 +18,7 @@ First create a folder in your computer and keep it as the working directory for 
             1) r   : the radius of the polar coordinates.
             2) eta : the vector of polar coordinates with length (p-1).
 
- - polar2cart.R
+ - ### polar2cart.R
 
     Description: 
     
@@ -36,7 +36,7 @@ First create a folder in your computer and keep it as the working directory for 
             
             cartesian coordinates in p-dimensional space.
     
-  - cudratico.R
+  - ### cudratico.R
     
     Description: 
     
@@ -53,7 +53,7 @@ First create a folder in your computer and keep it as the working directory for 
     
             a matrix of same dimension as the input matrix prediciones, of which the rows are projected onto the space of quantiles.
     
-  - survey2wassersteinmodel.R
+  - ### survey2wassersteinmodel.R
 
     Description:
     
@@ -73,7 +73,7 @@ First create a folder in your computer and keep it as the working directory for 
            3) predicciones  : the prediction of regression model
            4) residuos      : the residuals of the fitted model
     
-  - wn_cost.R
+  - ### wn_cost.R
 
     Description: 
     
@@ -97,7 +97,7 @@ First create a folder in your computer and keep it as the working directory for 
   
             the mean square prediction error as a function of the Index parameter.
             
-  - adj_fr_r2.R
+  - ### adj_fr_r2.R
 
     Description: 
    
@@ -114,8 +114,8 @@ First create a folder in your computer and keep it as the working directory for 
          A list contaning the Fréchet R-squared and adjusted Fréchet R-squared.
          
          
-  - PLFSI_model.R
-  - spline_variation.R
+  - ### PLFSI_model.R
+  - ### spline_variation.R
   - AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
   - AnalysisAge30to50_with_BMXWAIST_HEI_wTAC.Rmd
 
