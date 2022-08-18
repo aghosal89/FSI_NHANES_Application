@@ -8,7 +8,7 @@
 
     Description: 
     
-            This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius.
+            This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5.
     
     Inputs: 
     
