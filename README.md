@@ -1,6 +1,8 @@
 # Application of Partially Linear Fréchet Single Index model to NHANES data on wearable devices.
 
-1. First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the following files from this repository, in no particular order. 
+## Step 1:
+
+First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the following files from this repository, in no particular order. 
 
  - cart2polar.R
     
