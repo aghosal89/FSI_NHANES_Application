@@ -1,0 +1,141 @@
+
+---
+title: 'Analysis for age range 20-80 years with BMXBMI, RIDAGEYR.y in SI; RIAGENDR, RIDRETH3, HEI in linear part'
+author: "Aritra Ghosal"
+date: "2/26/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE, warning=FALSE}
+
+library("optimParallel")
+library("tidyverse")
+library("survey")
+library("fda.usc")
+library("sandwich")
+library("compiler")
+```
+
+```{r, warning= FALSE}
+# Aritra's library for R operations
+#setwd("~/Documents/FSI/Application /alex/FSI_NHANES/Archive_PLFSI")
+# Aritra's library for R operations in RAS server
+setwd("~/MATLAB/Archive_PLFSI")
+
+# Use your own directory
+
+# setwd("C:/Users/Admin/Downloads/Archive_rmd_65")
+
+# read the dataset
+datos= read.csv("datosalex(1).csv")
+indices= round(seq(188,687, length=500))
+
+colnames(datos)[indices]= paste("X", 1:500, sep="")
+datos= datos[, c(1:187, indices)]
+
+# subset data for age 30-80 years
+datos<- subset(datos, datos$RIDAGEYR.x >= 20 & datos$RIDAGEYR.x <= 80)  
+
+# subset data for BMI in the range 18.5 - 40
+datos<- subset(datos, datos$BMXBMI >= 18.5 & datos$BMXBMI <= 40)  
+
+# create the response data as functional data
+datosfda= datos[,188:687]
+datosfda= as.matrix(datosfda)
+datosfda[which(datosfda>280)]= datosfda[which(datosfda>280)-1]+0.5
+datos[,188:687]= datosfda
+
+tt= seq(0,1,length=500)
+objetofda= fdata(datosfda,argvals = tt)
+
+#relevel(data_analysis_svy$variables$RIDRETH3,3) 
+
+si_vars <- c("BMXBMI","RIDAGEYR.y")  # covariates for Single Index part
+linear_vars<- c("RIAGENDR","RIDRETH3","HEI")  # covariates for Linear part
+linear_vars_numerical <- "HEI"  # numeric covariates for Linear part
+linear_vars_categorical <- c("RIAGENDR","RIDRETH3")  # categorical covariates for Linear part
+
+
+# the survey variables
+datosx <- cbind.data.frame(scale(datos[,si_vars]), datos[,linear_vars_categorical], HEI=scale(datos[,linear_vars_numerical]), survey_wt= datos[,"wtmec4yr_adj_norm"],survey_id=datos[,"SDMVPSU"], survey_strata= datos[,"SDMVSTRA"])
+datosx$RIAGENDR<- as.factor(datosx$RIAGENDR)
+datosx$RIDRETH3<- as.factor(datosx$RIDRETH3)
+datosx$survey_strara<- as.factor(datosx$survey_strata)
+datosx$survey_id<- as.factor(datosx$survey_id)
+
+# obtain the global Frechet model
+
+## compute the regression formula for the model
+formula<- paste(paste(linear_vars,collapse="+"), paste(paste(si_vars),collapse="+"),sep="+")
+  data_temp <- cbind.data.frame(datosx, datosfda)
+  data_analysis_svy <- svydesign(id= ~survey_id, strata = ~survey_strata, 
+                                 weights= ~survey_wt,data = data_temp,nest = TRUE)
+  
+  source("survey2wassersteinmodel.R", local =knitr::knit_global())
+  res<- survey2wassersteinmodel(formula=formula, data_analysis_svy, objetofda=objetofda)   # these also have to be quantiles
+  # obtain R-squared 
+  res$r2
+  
+# obtain integrated R-sauared for the quantile range [0, 0.97].
+m97 <- floor(which(tt>=0.97))[1]
+tt97 <- tt[1:m97]
+fdadensity:::trapzRcpp(X=tt97, Y=res$R2_vector[1:m97])
+  
+# Frechet R-squared of the GF model
+source("adj_fr_r2.R", local = knitr::knit_global())
+frsq<- adj_fr_r2(qin=datosfda, qpred=res$predicciones, tt=tt, q=nrow(res$betaj), survey_weights=datosx$survey_wt)
+frsq$Frechet_R2
+
+# Adjusted Frechet R-squared of GF model
+frsq$Adj_Frechet_R2
+
+source("PLFSI_model.R", local = knitr::knit_global())
+lmod<- PLFSI_model(si_vars = si_vars, linear_vars = linear_vars, datosfda = datosfda, tt =tt, 
+                   nsp = 4, L = 0, etaStart = NULL, sp=4, dfs=9, datosx= datosx)
+
+# report the Frechet R^2
+lmod$Frechet_R2
+
+# report the Adjusted Frechet R^2
+lmod$Adj_Frechet_R2
+
+# report the R^2
+lmod$R2
+
+# obtain integrated R-sauared for the quantile range [0, 0.97].
+m97 <- floor(which(tt>=0.97))[1]
+tt97 <- tt[1:m97]
+fdadensity:::trapzRcpp(X=tt97, Y=lmod$R2_vector[1:m97])
+
+# estimate of index parameter
+lmod$thetaHat
+write.csv(lmod$thetaHat, "Theta_Hat.csv")
+
+# To check if all points converged
+lmod$converge
+
+# obtain the residuals with patient id
+res_id<- cbind.data.frame(SEQN =datos$SEQN, lmod$residuals)
+colnames(res_id)<- c("SEQN", paste("X", c(1:ncol(lmod$residuals)), sep = ""))
+
+# save the residuals for further analysis
+write.csv(res_id, "Output_Age20to80_noTAC_residuals3.csv") 
+
+# to plot of the beta estimates
+betas  <- lmod$betaj
+rnames <- rownames(betas)
+beta_ucl<- lmod$beta_ucl
+beta_lcl<- lmod$beta_lcl
+
+write.csv(betas, "Output_Age20to80_noTAC_betas3.csv" )
+write.csv(rnames, "Output_Age20to80_noTAC_rnames3.csv")
+write.csv(lmod$beta_ucl, "Output_Age20to80_noTAC_betas_UCL3.csv" )
+write.csv(lmod$beta_lcl, "Output_Age20to80_noTAC_betas_LCL3.csv" )
+
+```
+
+
