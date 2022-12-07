@@ -162,7 +162,7 @@ First create a folder in your computer and keep it as the working directory for 
                        starting point
                        
                        
-  - ### spline_variation.R
+  - ### Plots.R
   - ### AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
   - ### AnalysisAge30to50_with_BMXWAIST_HEI_wTAC.Rmd
 
