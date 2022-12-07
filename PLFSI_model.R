@@ -1,28 +1,32 @@
 
+# Sourcing 
+#
 # This function fits the partially-linear Frechet Single Index model to the 
 # distributional responses. The files 'wn_cost.R', 'polar2cart.R', 'cart2polar.R',
 # 'survey2wassersteinmodel.R', 'cuadratico.R' have to be sourced prior to running 
 # the codes in this script.
 
+
 # Inputs:
 # 
-# tt        - length m grid spanning [0, 1], used as grid for quantile functions
-# datosfda  - nxm matrix of response quantile functions on grid tt
-# si_vars    - An p-vector of variables' names to be considered in the Single Index part.
-# linear_vars - An q-vector of variables' names to be considered in the linear part.
-# nsp     - integer giving the number of starting points in each dimension to be 
-#           used by optim. A lattice of points will be created by constructing 
-#           an equally spaced grid for each of the (p - 1) hyperspherical coordinates
-#           used to represent theta in the optimization. Default is 3
-# L       - a list of integers specifying which starting points to use. If L = 0 (default),
-#           all of the starting points in the lattice will be utilized. Otherwise,
-#           L of these will be chosen by row number. If L = -1, the user will have to 
-#           input a matrix whose rows are the starting points.
-# etaStart - a matrix with (p-1) columns each row indicating a unique starting value
-#            used in optimization for estimating theta. This is input only if L=-1 
-# datosx   - the dataset of n whose columns include the covariates, survey variables of the model.
-# sp       - order of spline.
-# dfs      - degrees of freedem of the spline
+# tt          - length m grid spanning [0, 1], used as grid for quantile functions
+# datosfda    - nxm matrix of response quantile functions on grid tt
+# si_vars     - a p-vector of variables' names to be considered in the Single Index part.
+# linear_vars - a q-vector of variables' names to be considered in the linear part.
+# formula_lv  - a character of length=1, the formula of the covariates in the linear part
+# nsp         - integer giving the number of starting points in each dimension to be 
+#               used by optimparallel. A lattice of points will be created by constructing 
+#               an equally spaced grid for each of the (p - 1) hyperspherical coordinates
+#               used to represent theta in the optimization. Default is 3
+# L           - a list of integers specifying which starting points to use. If L = 0 (default),
+#               all of the starting points in the lattice will be utilized. Otherwise,
+#               L of these will be chosen by row number. If L = -1, the user will have to 
+#               input a matrix whose rows are the starting points.
+# etaStart    - a matrix with (p-1) columns each row indicating a unique starting value
+#               used in optimization for estimating theta. This is input only if L=-1 
+# datosx      - the dataset of n whose columns include the covariates, survey variables of the model.
+# sp          - order of spline.
+# dfs         - degrees of freedem of the spline
 
 # Output: A List with the following elements
 #
@@ -33,8 +37,10 @@
 # optInf   - list containing information about optimization routine for each
 #            starting point
 
-PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, datosfda = NULL, tt = NULL, datosx=NULL, 
-                  nsp = 3, L = 0, etaStart = NULL, sp=NULL, dfs=NULL) {
+PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL, datosfda = NULL, 
+                  tt = NULL, datosx=NULL, nsp = 3, L = 0, etaStart = NULL, 
+                  sp=NULL, dfs=NULL) {
+  
   library("numbers")
   # Perform checks
   if(is.null(si_vars)){
@@ -67,7 +73,6 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, datosfda = NULL, tt 
     message('Invalid specification of input etaStart, resetting to default')
     nsp <- L
   }
-  
   
   # Create grid of starting values for optimization
   
@@ -112,7 +117,7 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, datosfda = NULL, tt 
     WnOpt <- optimParallel(par = as.matrix(etaStart)[k,], fn = wn_cost, method = "L-BFGS-B",
                            lower = -pi/2, upper = pi/2, control = optim_optns, 
                            datosfda=datosfda, datosx = datosx, linear_vars=linear_vars, 
-                           si_vars=si_vars, tt=tt, sp=sp, dfs=dfs,
+                           si_vars=si_vars, tt=tt, sp=sp, dfs=dfs, formula_lv=formula_lv,
                            parallel=list(forward=TRUE))
     
     optInf[[k]] <- WnOpt
@@ -136,7 +141,7 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, datosfda = NULL, tt 
   
   ## modifying the inputs of the algorithm
   
-  formula<- paste(paste(linear_vars,collapse="+"), paste(colnames(bs_data),collapse="+"),sep="+")
+  formula<- paste(formula_lv, paste(colnames(bs_data),collapse="+"),sep="+")
   data_temp<- cbind.data.frame(data_temp, datosfda)
   data_analysis_svy <- svydesign(id= ~survey_id, strata = ~survey_strata, 
                                  weights= ~survey_wt, data = data_temp, nest = TRUE)
@@ -147,10 +152,10 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, datosfda = NULL, tt 
   
   q_n<- nrow(res$betaj)
   source("adj_fr_r2.R", local = knitr::knit_global())
-  adjusted_fr_r2<- adj_fr_r2(qin=datosfda, qpred=res$predicciones, tt=tt, q=q_n)
+  adjusted_fr_r2<- adj_fr_r2(qin=datosfda, qpred=res$predicciones, tt=tt, q=q_n, survey_weights= datosx$survey_wt)
   return(list(thetaHat = thetaHat, converge= converge, fnvalue=optvalue, etaStart= etaStart, optInf = optInf,
               R2= res$r2,betaj= res$betaj, predictions= res$predicciones, residuals= res$residuos,
-              Frechet.R2= adjusted_fr_r2$Frechet_R2, Adj.Frechet.R2= adjusted_fr_r2$Frechet_Adj_R2,
-              beta_lcl=res$beta_lcl, beta_ucl=res$beta_ucl))
+              Frechet_R2= adjusted_fr_r2$Frechet_R2, Adj_Frechet_R2= adjusted_fr_r2$Adj_Frechet_R2,
+              beta_lcl=res$beta_lcl, beta_ucl=res$beta_ucl, R2_vector= res$R2_vector))
   
 }
