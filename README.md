@@ -117,13 +117,13 @@ First create a folder in your computer and keep it as the working directory for 
    
     Output 
     
-         A list contaning the Fréchet R-squared and adjusted Fréchet R-squared.
+         A list contanining Fréchet R-squared (Frechet_R2), Adjusted Fréchet R-squared (Adj_Frechet_R2).
         
   - ### PLFSI_model.R
 
     Description: 
     
-         This function fits the partially-linear Frechet Single Index model to the distributional responses.
+         This function fits the partially-linear Fréchet Single Index model to the distributional responses.
          
     Sourcing: 
     
