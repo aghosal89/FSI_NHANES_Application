@@ -7,7 +7,7 @@ First create a folder in your computer and keep it as the working directory for 
  - ### cart2polar.R
     
             Description: This function computes polar coordinates from the cartesian coordinates in p-dimensional euclidean 
-            space for the dimensions 2, 3, 4, 5.
+            space for the dimensions p = 2, 3, 4, 5.
             
     Input:
     
@@ -23,7 +23,7 @@ First create a folder in your computer and keep it as the working directory for 
     Description: 
     
             This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in 
-            (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the reverse operation of the 'cart2polar' 
+            (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' 
             function above.
 
     Inputs: 
@@ -40,14 +40,14 @@ First create a folder in your computer and keep it as the working directory for 
     
     Description: 
     
-            This function projects the model predictions into space of quantiles, the L^2 - Wasserstein space by solving 
-            a linear programing problem. 
+            This function projects the model predictions into the space of quantiles, the L^2 - Wasserstein space by solving 
+            a quadratic programing problem. 
     
     Inputs:
     
             1. prediciones  - model predictions of the GLM.
-            2. cotainferior - lower limit of the quantiles
-            3. cotasuperior - upper limit of the quantiles
+            2. cotainferior - lower limit of the quantiles.
+            3. cotasuperior - upper limit of the quantiles.
     
     Output:
     
@@ -57,21 +57,21 @@ First create a folder in your computer and keep it as the working directory for 
 
     Description:
     
-           This function computes the performance metrics, estimates parameters, residuals of the model utilizing the 
+           This function computes the performance metrics, estimates the beta functional parameters, residuals of the model utilizing the 
            survey design proposed by NHANES. 
            
     Inputs: 
     
            1) formula           : a character representing the formula for regression
            2) data_analysis_svy : a survey GLM object 
-           3) objectofda        : the functional data representation of the response quantiles
+           3) objetofda         : the functional data representation of the response quantiles
 
     Outputs:
    
-           1) r^2           : the R^2 of the fitted model
-           2) betaj         : beta coefficients of the fitted regression model
-           3) predicciones  : the prediction of regression model
-           4) residuos      : the residuals of the fitted model
+           1) r^2           : the coefficient of determination (R-squared) of the fitted model.
+           2) betaj         : functional beta coefficients of the fitted regression models. 
+           3) predicciones  : the prediction of regression model.
+           4) residuos      : the residuals of the fitted model obtained for each point on the grid [0,1]
     
   - ### wn_cost.R
 
