@@ -70,8 +70,13 @@ First create a folder in your computer and keep it as the working directory for 
    
            1) r^2           : the coefficient of determination (R-squared) of the fitted model.
            2) betaj         : functional beta coefficients of the fitted regression models. 
-           3) predicciones  : the prediction of regression model.
-           4) residuos      : the residuals of the fitted model obtained for each point on the grid [0,1]
+           3) beta_lcl      : pointwise lower 95% Confidence Interval of the beta parameter
+           4) beta_ucl      : pointwise upper 95% Confidence Interval of the beta parameter
+           5) predicciones  : the prediction of regression model.
+           6) residuos      : the residuals of the fitted model obtained for each point on the grid [0,1]
+           7) r2vec         : a vector of length same as number of columns in predicciones 
+                              above, containing the multiple R-squared for each percentile.
+           
     
   - ### wn_cost.R
 
@@ -88,9 +93,10 @@ First create a folder in your computer and keep it as the working directory for 
                              variables for survey design.
             5. linear_vars : the names of the p covariates for the linear part of model included in datosx.
             6. si_vars     : the names of the q covariates for the SI part of model included in datosx.
-            7. tt          : the equidistant grid on [0,1] of length m.
-            8. sp          : the degree of polynomial considered for spline regression.
-            9. dfs         : degrees of freedom as an alternative to specifying the knots.
+            7. formula_lv  : a character of length=1, the formula of the covariates in the linear part.
+            8. tt          : the equidistant grid on [0,1] of length m.
+            9. sp          : the degree of polynomial considered for spline regression.
+           10. dfs         : degrees of freedom as an alternative to specifying the knots.
 
   
     Output:
