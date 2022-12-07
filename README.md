@@ -134,26 +134,34 @@ First create a folder in your computer and keep it as the working directory for 
     
          1. tt          : length m grid spanning [0, 1], used as grid for quantile functions.
          2. datosfda    : nxm matrix of response quantile functions on grid tt.
-         3. si_vars     : An p-vector of variables' names to be considered in the Single Index part.
-         4. linear_vars : An q-vector of variables' names to be considered in the linear part.
-         5. nsp         : integer giving the number of starting points in each dimension to be used by optim. A 
+         3. si_vars     : a p-vector of variables' names to be considered in the Single Index part.
+         4. linear_vars : a q-vector of variables' names to be considered in the linear part.
+         5. formula_lv  : a character of length=1, the formula of the covariates in the linear part
+         6. nsp         : integer giving the number of starting points in each dimension to be used by optim. A 
                           lattice of points will be created by constructing an equally spaced grid for each of 
                           the (p - 1) hyperspherical coordinates used to represent theta in the optimization. 
                           Default is 3.
-         6. L           : a list of integers specifying which starting points to use. If L = 0 (default), all of 
+         7. L           : a list of integers specifying which starting points to use. If L = 0 (default), all of 
                           the starting points in the lattice will be utilized. Otherwise, L of these will be 
                           chosen by row number. If L = -1, the user will have to input a matrix whose rows are 
                           the starting points.
-         7. etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization 
+         8. etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization 
                           for estimating theta. This is input only if L=-1 
          9. datosx      : the dataset of n whose columns include the covariates, survey variables of the model.
-         10. sp         : order of spline.
-         11. dfs         : degrees of freedem of the spline.
+        10. sp          : order of spline.
+        11. dfs         : degrees of freedem of the spline.
 
     
-    Outputs:
+    Outputs: A List with the following elements:
     
-    
+         1. thetaHat : length p vector giving the estimated coefficient
+         2. fnvalue  : achieved minimum value of the criterion function for estimating theta
+         3. etaStart : matrix with (p - 1) columns, each row indicating a unique starting value
+                       used in optimization for estimating theta
+         4. optInf   : list containing information about optimization routine for each
+                       starting point
+                       
+                       
   - ### spline_variation.R
   - ### AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
   - ### AnalysisAge30to50_with_BMXWAIST_HEI_wTAC.Rmd
