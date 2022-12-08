@@ -1,6 +1,6 @@
 # Application of Partially Linear Fréchet Single Index model to NHANES data on wearable devices.
 
-## Step 1:
+## Step 1: functions used for model
 
 First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the following files from this repository, in no particular order. 
 
@@ -161,8 +161,12 @@ First create a folder in your computer and keep it as the working directory for 
          4. optInf   : list containing information about optimization routine for each
                        starting point
                        
-                       
-  - ### Plots.R
+                     
+  ## Step 2: Run the codes that utilize the above functions:
+    
+         - AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
+         - Plots.R
+         
   - ### AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
   - ### AnalysisAge30to50_with_BMXWAIST_HEI_wTAC.Rmd
 
