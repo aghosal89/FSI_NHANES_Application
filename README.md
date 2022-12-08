@@ -164,6 +164,9 @@ First create a folder in your computer and keep it as the working directory for 
                      
   ## Step 2: Run the codes that utilize the above functions:
   
-  - ### AnalysisAge30to80_with_HEI.Rmd
+  - ### AnalysisAge30to80_with_HEI_noTAC.Rmd
+  
+    Description: The file computes the model with the participants in the age range 20 - 80 years and BMI range 18.5 - 40. For the hybrid nature of the model, we considered the covariates Age and BMI in the non-linear part, and the covariates Sex, Ethnicity, HEI in the linear part. 
+  
   - ### Plots.R
 
