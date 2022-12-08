@@ -163,12 +163,7 @@ First create a folder in your computer and keep it as the working directory for 
                        
                      
   ## Step 2: Run the codes that utilize the above functions:
-    
-         - AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
-         - Plots.R
-         
+  
   - ### AnalysisAge30to50_with_BMXWAIST_HEI.Rmd
-  - ### AnalysisAge30to50_with_BMXWAIST_HEI_wTAC.Rmd
-
-
+  - ### Plots.R
 
