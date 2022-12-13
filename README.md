@@ -170,13 +170,20 @@ First create a folder in your computer and keep it as the working directory for 
     
           The file computes the model with the participants in the age range 20 - 80 years and BMI range 18.5 - 40. For the hybrid nature of the model, we           considered the covariates Age and BMI in the non-linear part, and the covariates Sex, Ethnicity, HEI in the linear part. 
     
+    Sources:
+    
+          - adj_fr_r2.R
+          - PLFSI_model.R
+          - survey2wassersteinmodel.R
+          - wn_cost.R
+       
     Input: 
     
           The dataset datosalex(1).csv file can be obtained from the link: https://drive.google.com/file/d/1T4tjMgxfiAXxhfYWW1hR2WFlupig6BiK/view?usp=share_link
     
     Outputs:
     
-          1. 
+          1. AnalysisAge30to80_with_HEI_noTAC.html as the document obtained after knitting the .Rmd file above. 
           
           2. 
           
