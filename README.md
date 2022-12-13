@@ -172,10 +172,10 @@ First create a folder in your computer and keep it as the working directory for 
     
     Sources:
     
-          - adj_fr_r2.R
-          - PLFSI_model.R
-          - survey2wassersteinmodel.R
-          - wn_cost.R
+          *  adj_fr_r2.R
+          *  PLFSI_model.R
+          *  survey2wassersteinmodel.R
+          *  wn_cost.R
        
     Input: 
     
@@ -183,9 +183,14 @@ First create a folder in your computer and keep it as the working directory for 
     
     Outputs:
     
-          1. AnalysisAge30to80_with_HEI_noTAC.html as the document obtained after knitting the .Rmd file above. 
-          
-          2. 
+          1. AnalysisAge30to80_with_HEI_noTAC.html: as the document obtained after knitting the .Rmd file above. 
+          2. Theta_Hat.csv: as the .csv file contaning the estimated index parameter for the Single Index part of the model.
+          3. Output_Age20to80_noTAC_residuals3.csv
+          4. Output_Age20to80_noTAC_predictions3.csv
+          5. Output_Age20to80_noTAC_betas3.csv
+          6. Output_Age20to80_noTAC_rnames3.csv
+          7. Output_Age20to80_noTAC_betas_UCL3.csv
+          8. Output_Age20to80_noTAC_betas_LCL3.csv
           
   - ### Plots.R
   
