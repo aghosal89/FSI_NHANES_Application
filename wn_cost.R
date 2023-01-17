@@ -3,23 +3,27 @@
 
 ## Inputs: 
 
-## 1) et            - index parameter in polar coordinates
-## 2) datosfda      - an nxm matrix as the response whose each row represents an observation, 
-##                    each column represents a quantile, t from [0,1].
-## 3) linear_vars   - the names of the p covariates for the linear part of model included in datosx 
-## 4) si_vars       - the names of the q covariates for the SI part of model included in datosx
-## 5) formula_lv    - a character of length=1, the formula of the covariates in the linear part
-## 5) tt            - the equidistant grid on [0,1] of length m.
-## 6) sp            - the degree of polynomial considered for spline regression.
-## 7) dfs           - degrees of freedom as an alternative to specifying the knots. 
-## 8) datosx        - a data frame with n rows whose columns include the covariates for the model
-##                    as well as for survey design.
+# 1) et            - index parameter in polar coordinates
+# 2) datosfda      - an nxm matrix as the response whose each row represents an 
+#                    observation, each column represents the quantile corresponding 
+#                    to a grid of t from [0,1].
+# 3) linear_vars   - the names of the p covariates for the linear part of model 
+#                    included in datosx
+# 4) formula_lv    - a single character denoting the formula for the variables in the 
+#                    linear part to be considered for the model, e.g. interactions, 
+#                    higher order terms etc.
+# 5) si_vars       - the names of the q covariates for the SI part of model 
+#                    included in datosx.
+# 6) tt            - the equidistant grid on [0,1] of length m.
+# 7) sp            - the degree of polynomial considered for spline regression.
+# 8) dfs           - degrees of freedom as an alternative to specifying the knots. 
+# 9) datosx        - a data frame with n rows whose columns include the covariates 
+#                    for the model as well as for survey design.
 
 ## Output: the mean square prediction error. 
 
-wn_cost <- function(et, datosfda, linear_vars, si_vars, formula_lv, tt, sp, dfs, datosx) {
+wn_cost <- function(et, datosfda, linear_vars, formula_lv, si_vars, tt, sp, dfs, datosx) {
   
-  # read the necessary libraries:
   library("survey")
   library("splines")
   library("fda.usc")
@@ -48,4 +52,6 @@ wn_cost <- function(et, datosfda, linear_vars, si_vars, formula_lv, tt, sp, dfs,
   
   w<- data_analysis_svy$variables$survey_wt
   return(sum(w*RSS/sum(w)))
+
 }
+

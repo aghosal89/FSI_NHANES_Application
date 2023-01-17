@@ -1,21 +1,20 @@
 
-# Sourcing 
-#
 # This function fits the partially-linear Frechet Single Index model to the 
 # distributional responses. The files 'wn_cost.R', 'polar2cart.R', 'cart2polar.R',
 # 'survey2wassersteinmodel.R', 'cuadratico.R' have to be sourced prior to running 
 # the codes in this script.
 
-
-# Inputs:
+## Inputs:
 # 
 # tt          - length m grid spanning [0, 1], used as grid for quantile functions
 # datosfda    - nxm matrix of response quantile functions on grid tt
-# si_vars     - a p-vector of variables' names to be considered in the Single Index part.
-# linear_vars - a q-vector of variables' names to be considered in the linear part.
-# formula_lv  - a character of length=1, the formula of the covariates in the linear part
+# si_vars     - A p-vector of variables' names to be considered in the Single Index part.
+# linear_vars - A q-vector of variables' names to be considered in the linear part.
+# formula_lv  - a single character denoting the formula for the variables in the 
+#               linear part to be considered for the model, e.g. interactions, 
+#               higher order terms, other transformations etc.
 # nsp         - integer giving the number of starting points in each dimension to be 
-#               used by optimparallel. A lattice of points will be created by constructing 
+#               used by optim. A lattice of points will be created by constructing 
 #               an equally spaced grid for each of the (p - 1) hyperspherical coordinates
 #               used to represent theta in the optimization. Default is 3
 # L           - a list of integers specifying which starting points to use. If L = 0 (default),
@@ -28,7 +27,7 @@
 # sp          - order of spline.
 # dfs         - degrees of freedem of the spline
 
-# Output: A List with the following elements
+## Output: A List with the following elements
 #
 # thetaHat - length p vector giving the estimated coefficient
 # fnvalue  - achieved minimum value of the criterion function for estimating theta
@@ -37,9 +36,9 @@
 # optInf   - list containing information about optimization routine for each
 #            starting point
 
-PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL, datosfda = NULL, 
-                  tt = NULL, datosx=NULL, nsp = 3, L = 0, etaStart = NULL, 
-                  sp=NULL, dfs=NULL) {
+PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL, 
+                  datosfda = NULL, tt = NULL, datosx=NULL, nsp = 3, L = 0, 
+                  etaStart = NULL, sp=NULL, dfs=NULL) {
   
   library("numbers")
   # Perform checks
@@ -154,8 +153,8 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL, dat
   source("adj_fr_r2.R", local = knitr::knit_global())
   adjusted_fr_r2<- adj_fr_r2(qin=datosfda, qpred=res$predicciones, tt=tt, q=q_n, survey_weights= datosx$survey_wt)
   return(list(thetaHat = thetaHat, converge= converge, fnvalue=optvalue, etaStart= etaStart, optInf = optInf,
-              R2= res$r2,betaj= res$betaj, predictions= res$predicciones, residuals= res$residuos,
+              R2= res$r2, betaj= res$betaj, predictions= res$predicciones, residuals= res$residuos,
               Frechet_R2= adjusted_fr_r2$Frechet_R2, Adj_Frechet_R2= adjusted_fr_r2$Adj_Frechet_R2,
-              beta_lcl=res$beta_lcl, beta_ucl=res$beta_ucl, R2_vector= res$R2_vector))
+              R2_vector= res$R2_vector))
   
 }
