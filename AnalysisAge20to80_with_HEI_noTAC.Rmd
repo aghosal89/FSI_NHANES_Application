@@ -141,15 +141,15 @@ res_id<- cbind.data.frame(SEQN =datos$SEQN, lmod$residuals)
 colnames(res_id)<- c("SEQN", paste("X", c(1:ncol(lmod$residuals)), sep = ""))
 
 # save the residuals for further analysis
-write.csv(res_id, "Output_Age20to80_noTAC_residuals3.csv") 
-write.csv(lmod$predictions, "Output_Age20to80_noTAC_predictions3.csv")
+write.csv(res_id, "Output_Age20to80_noTAC_residuals.csv") 
+write.csv(lmod$predictions, "Output_Age20to80_noTAC_predictions.csv")
 
 # to plot of the beta estimates
 betas  <- lmod$betaj
 rnames <- rownames(betas)
 
-write.csv(betas, "Output_Age20to80_noTAC_betas3.csv" )
-write.csv(rnames, "Output_Age20to80_noTAC_rnames3.csv")
+write.csv(betas, "Output_Age20to80_noTAC_betas.csv" )
+write.csv(rnames, "Output_Age20to80_noTAC_rnames.csv")
 
 ```
 
