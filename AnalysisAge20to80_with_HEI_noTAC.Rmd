@@ -183,6 +183,8 @@ dfs<- 9
   
   m2 = svyglm(formulafinal, design=data_analysis_svy, family=stats::gaussian())
   
+  # the following function creates a vector of 0s and 1s with 1s specified at the 
+  # 
   vec1s<- function(vec_pos, lenv) {
     vec_temp<- rep(0, lenv)
     vec_temp[vec_pos]<- 1
@@ -238,8 +240,8 @@ dfs<- 9
   }
   
 write.csv(betaj, "Output_Age20to80_noTAC_betas.csv")
-write.csv(betaj_ucl, "Output_Age20to80_noTAC_betas_UCL3.csv" )
-write.csv(betaj_lcl, "Output_Age20to80_noTAC_betas_LCL3.csv" )
+write.csv(betaj_ucl, "Output_Age20to80_noTAC_betas_UCL.csv" )
+write.csv(betaj_lcl, "Output_Age20to80_noTAC_betas_LCL.csv" )
 
 write.csv(beta_effects, "Output_Age20to80_noTAC_betaeffects.csv")
 write.csv(betaeffects_ucl, "Output_Age20to80_noTAC_betaeffects_UCL.csv" )
