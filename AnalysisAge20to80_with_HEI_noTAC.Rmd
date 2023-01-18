@@ -19,6 +19,7 @@ library("survey")
 library("fda.usc")
 library("sandwich")
 library("compiler")
+
 ```
 
 ### Source the necessary functions
@@ -146,13 +147,103 @@ write.csv(lmod$predictions, "Output_Age20to80_noTAC_predictions3.csv")
 # to plot of the beta estimates
 betas  <- lmod$betaj
 rnames <- rownames(betas)
-beta_ucl<- lmod$beta_ucl
-beta_lcl<- lmod$beta_lcl
 
 write.csv(betas, "Output_Age20to80_noTAC_betas3.csv" )
 write.csv(rnames, "Output_Age20to80_noTAC_rnames3.csv")
-write.csv(lmod$beta_ucl, "Output_Age20to80_noTAC_betas_UCL3.csv" )
-write.csv(lmod$beta_lcl, "Output_Age20to80_noTAC_betas_LCL3.csv" )
+
+```
+
+### Computation of the 95% Confidence Intervals for the effects
+
+```{r}
+
+bs_fun <- as.matrix(datosx[,si_vars])%*%(lmod$thetaHat)
+  
+#bs_fun <- as.matrix(datosx[,si_vars])%*%(thetahat)
+
+sp<- 4
+dfs<- 9
+
+  bs_data<- data.frame(bs(x=bs_fun, degree=sp, df=dfs))
+  colnames(bs_data) <- paste("BS", seq(1:ncol(bs_data)), sep = "")
+  data_temp<- cbind.data.frame(datosx, bs_data)
+  
+  ## modifying the inputs of the algorithm
+  
+  formula<- paste(formula_lv, paste(colnames(bs_data),collapse="+"),sep="+")
+  data_temp<- cbind.data.frame(data_temp, datosfda)
+  data_analysis_svy <- svydesign(id= ~survey_id, strata = ~survey_strata, 
+                                 weights= ~survey_wt, data = data_temp, nest = TRUE)
+  
+  formulaaux= paste("X", 1, sep="")
+  formulaaux= paste(formulaaux, "~", sep="")
+  
+  formulafinal= paste(formulaaux, formula,sep="")
+  formulafinal= as.formula(formulafinal)  
+  
+  m2 = svyglm(formulafinal, design=data_analysis_svy, family=stats::gaussian())
+  
+  vec1s<- function(vec_pos, lenv) {
+    vec_temp<- rep(0, lenv)
+    vec_temp[vec_pos]<- 1
+    return(vec_temp)
+  }
+  
+  l2<- length(m2$coefficients)
+  # define the matrix for added effects 
+  C= matrix(c(vec1s(c(1),l2),             # male, mexican american
+              vec1s(c(1,2),l2),           # female, mexican american
+              vec1s(c(1,3),l2),           # male, other hispanic
+              vec1s(c(1,2,3,18),l2),      # female, other hispanic 
+              vec1s(c(1,4),l2),           # male, non-hispanic white 
+              vec1s(c(1,2,4,19),l2),      # female, non-hispanic white
+              vec1s(c(1,5),l2),           # male, non-hispanic black
+              vec1s(c(1,2,5,20),l2),      # female, non-hispanic black
+              vec1s(c(1,6),l2),           # male, non-hispanic asian
+              vec1s(c(1,2,6,21),l2),      # female, non-hispanic asian
+              vec1s(c(1,2,7,22),l2),      # male, other races incl. multi-racial
+              vec1s(c(1,7),l2),           # female, other races incl. multi-racial
+              vec1s(c(8),l2)),            # Healthy Eating Index
+              byrow = TRUE, ncol=22)
+  
+  betaj= matrix(0, nrow=length(m2$coefficients), ncol=ncol(objetofda$data))
+  betaj_ucl= matrix(0, nrow=length(m2$coefficients), ncol=ncol(objetofda$data))
+  betaj_lcl= matrix(0, nrow=length(m2$coefficients), ncol=ncol(objetofda$data))
+  
+  beta_effects= matrix(0, nrow=dim(C)[1], ncol=ncol(objetofda$data))
+  betaeffects_ucl= matrix(0, nrow=dim(C)[1], ncol=ncol(objetofda$data))
+  betaeffects_lcl= matrix(0, nrow=dim(C)[1], ncol=ncol(objetofda$data))
+  
+  #setup parallel backend to use many processors
+  t= proc.time()
+  for(i in 1:ncol(objetofda$data)) {
+    
+    formulaaux= paste("X", i, sep="")
+    formulaaux= paste(formulaaux,"~",sep="")
+    
+    formulafinal= paste(formulaaux, formula,sep="")
+    formulafinal= as.formula(formulafinal)
+    m=svyglm(formulafinal, design=data_analysis_svy, family=stats::gaussian())
+    vcovm<- survey:::vcov.svyglm(m)
+    meffect<-matrix(as.vector(m$coefficients), ncol=1)
+    
+    betaj[,i]<- meffect
+    betaj_lcl[,i]<- confint(m)[,1]
+    betaj_ucl[,i]<- confint(m)[,2]
+    
+    beta_effects[,i]<- as.vector(C%*%(meffect))
+    betaeffects_ucl[,i]= as.vector(C%*%(meffect)) + qt(0.975, m$df.residual)* sqrt(diag(C%*%vcovm%*%t(C)))
+    betaeffects_lcl[,i]= as.vector(C%*%(meffect)) - qt(0.975, m$df.residual)* sqrt(diag(C%*%vcovm%*%t(C)))
+    
+  }
+  
+write.csv(betaj, "Output_Age20to80_noTAC_betas.csv")
+write.csv(betaj_ucl, "Output_Age20to80_noTAC_betas_UCL3.csv" )
+write.csv(betaj_lcl, "Output_Age20to80_noTAC_betas_LCL3.csv" )
+
+write.csv(beta_effects, "Output_Age20to80_noTAC_betaeffects.csv")
+write.csv(betaeffects_ucl, "Output_Age20to80_noTAC_betaeffects_UCL.csv" )
+write.csv(betaeffects_lcl, "Output_Age20to80_noTAC_betaeffects_LCL.csv" )
 
 ```
 
