@@ -533,6 +533,3 @@ hist(u_2, freq=FALSE, main="Histogram of Single Index", xlab= "")
 dev.off()
 
 
-
-# computation of the integral of the beta coefficients:
-
