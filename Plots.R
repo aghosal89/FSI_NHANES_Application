@@ -69,119 +69,27 @@ grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
 
 dev.off()
 
+
 ###########################################
 # Codes to create figure 2 in the document
 ###########################################
 
-# read the functional beta coefficients
-b= read.csv("Output_Age20to80_noTAC_betas3.csv", header = T)[,-1]
+# read the estimated main effects, 95% upper and lower confidence limits pointwise
+b_effects<- read.csv("Output_Age20to80_noTAC_betaeffects.csv")[,-1]
+b_effects_u95<- read.csv("Output_Age20to80_noTAC_betaeffects_ucl.csv")[,-1]
+b_effects_l95<- read.csv("Output_Age20to80_noTAC_betaeffects_lcl.csv")[,-1]
 
-# read the functional upper 95% CI of beta coefficients
-b_u95= read.csv("Output_Age20to80_noTAC_betas_UCL3.csv", header = T)[,-1]
-
-# read the functional lower 95% CI of beta coefficients
-b_l95= read.csv("Output_Age20to80_noTAC_betas_LCL3.csv", header = T)[,-1]
-
-# sequence of quantiles 
+# sequence of order of quantiles 
 tt= seq(0,1,length=ncol(b))
 
-
-# creating the plots 
+# creating the plots for order of quantile in the range [0, 0.97].
 qrnt <- floor(which(tt>=0.97))[1]
 tt1<- tt[1:qrnt]
-b1<- b[,c(1:qrnt)]
-b_u95_1<- b_u95[,c(1:qrnt)]
-b_l95_1<- b_l95[,c(1:qrnt)]
-b1[1,]
 
-plotdf_intercept<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
-                     ncol=1),t(b1[1,]), t(b_u95_1[1,]), t(b_l95_1[1,]))),
-                t=rep(tt1, 4), CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
-                                                  each= length(tt1)))
+b1_eff<- b_effects[,c(1:qrnt)]
+b_u95_1eff<- b_effects_u95[,c(1:qrnt)]
+b_l95_1eff<- b_effects_l95[,c(1:qrnt)]
 
-plotdf_SexF<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
-                      ncol=1),t(b1[2,]), t(b_u95_1[2,]), t(b_l95_1[2,]))),
-                       t=rep(tt1, 4), 
-                       CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
-                               each= length(tt1)))
-
-plotdf_OH<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
-                     ncol=1),t(b1[3,]), t(b_u95_1[3,]), t(b_l95_1[3,]))),
-                       t=rep(tt1, 4), 
-                       CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), each= length(tt1)))
-
-plotdf_NHW<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
-                      ncol=1),t(b1[4,]), t(b_u95_1[4,]), t(b_l95_1[4,]))),
-                        t=rep(tt1, 4), 
-                        CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), each= length(tt1)))
-
-plotdf_NHB<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
-                      ncol=1),t(b1[5,]), t(b_u95_1[5,]), t(b_l95_1[5,]))),
-                        t=rep(tt1, 4), 
-                        CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), each= length(tt1)))
-
-plotdf_NHA<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
-                      ncol=1),t(b1[6,]), t(b_u95_1[6,]), t(b_l95_1[6,]))),
-                        t=rep(tt1, 4), 
-                        CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
-                        each= length(tt1)))
-
-plotdf_ORIMR<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
-                      ncol=1),t(b1[7,]), t(b_u95_1[7,]), t(b_l95_1[7,]))),
-                        t=rep(tt1, 4), 
-                        CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
-                        each= length(tt1)))
-
-plotdf_HEI<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
-                      ncol=1),t(b1[8,]), t(b_u95_1[8,]), t(b_l95_1[8,]))),
-                        t=rep(tt1, 4), 
-                        CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
-                        each= length(tt1)))
-
-plotdf<- data.frame(rbind(plotdf_intercept, plotdf_SexF, plotdf_OH, plotdf_NHW,
-                          plotdf_NHB, plotdf_NHA, plotdf_ORIMR, plotdf_HEI), 
-                  Coefficient=rep(c("Intercept", "Sex:Female","Other Hispanic",
-                    "Non Hispanic White", "Non Hispanic Black",
-                   "Non Hispanic Asian", "Other Races(incl. Multi-racial)", "HEI"), each= nrow(plotdf_intercept)),
-                  Ord = rep(c(1:8), each= nrow(plotdf_intercept)))
-
-blank_data <- data.frame(Coefficient=rep(c("Intercept", "Sex:Female","Other Hispanic",
-                                           "Non Hispanic White", "Non Hispanic Black",
-                                           "Non Hispanic Asian", "Other Races(incl. Multi-racial)",
-                                           "HEI"), each=2), t = 0, 
-                         Coefficients = c(min(b_l95_1[1,]), max(b_u95_1[1,]), 
-                               min(b_l95_1[2,]), max(b_u95_1[2,]),
-                               min(b_l95_1[c(3:7),]), max(b_u95_1[c(3:7),]),
-                               min(b_l95_1[c(3:7),]), max(b_u95_1[c(3:7),]),
-                               min(b_l95_1[c(3:7),]), max(b_u95_1[c(3:7),]),
-                               min(b_l95_1[c(3:7),]), max(b_u95_1[c(3:7),]),
-                               min(b_l95_1[c(3:7),]), max(b_u95_1[c(3:7),]),
-                               min(b_l95_1[8,]), max(b_u95_1[8,])),
-                         CI= rep(c("Upper 95%","Lower 95%"), 8),
-                         Ord=1)
-
-ggplot(data = plotdf, aes(x=t, y=Coefficients, fill=CI)) +
-  geom_path(aes(colour=as.factor(CI)), size=.9, alpha=1) +
-  labs(colour = "Coefficient") +
-  scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9", "#009E73")) +
-  facet_wrap( ~reorder(Coefficient, Ord), scales = "free_y") +
-  theme(axis.text=element_text(size=11),
-        axis.title=element_text(size=11)) +
-  theme(text=element_text(size=11)) +
-  geom_blank(data = blank_data, aes(x = t, y = Coefficients)) +
-  ylab(label = "Estimated Coefficients") + theme_bw() 
-
-ggsave(file= "Rplot_betafunctional_linear2.eps", width = 8, height = 7) 
-
-###########################################
-# Codes to create figure 3 in the document
-###########################################
-
-# number of values for each of Age and BMI used to create the grid for figure 3
-m2<- 500
-
-# read the covaraiets in the PLFSI model
-rnames<- read.csv("Output_Age20to80_noTAC_rnames3.csv", header = T)[,-1]
 
 # read and manipulate the dataset
 datos <- read.csv("datosalex(1).csv")
@@ -196,12 +104,12 @@ datosfda= as.matrix(datosfda)
 datosfda[which(datosfda>280)]= datosfda[which(datosfda>280)-1]+0.5
 datos[,188:687]= datosfda
 
-tt= seq(0,1,length=500)
 objetofda= fdata(datosfda,argvals = tt)
 
 si_vars <- c("BMXBMI","RIDAGEYR.y")  # covariates for Single Index part
 linear_vars <- c("RIAGENDR","RIDRETH3","HEI")  # covariates for Linear part
 # question: why should we choose HEI if not significant. 
+
 # scale 
 linear_vars_numerical<- c("HEI")
 linear_vars_categorical<- c("RIAGENDR","RIDRETH3")
@@ -218,6 +126,155 @@ datosx$RIDRETH3<- as.factor(datosx$RIDRETH3)
 datosx$survey_strara<- as.factor(datosx$survey_strata)
 datosx$survey_id<- as.factor(datosx$survey_id)
 
+############
+# Plot for the added effects
+
+plotdf_SexM_E1<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[1,]), t(b_u95_1eff[1,]), t(b_l95_1eff[1,]))),
+                  t=rep(tt1, 4), CI= rep(c("0","Estimate","Upper 95%","Lower 95%"),
+                  each= length(tt1)))
+
+plotdf_SexF_E1<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[2,]), t(b_u95_1eff[2,]), t(b_l95_1eff[2,]))),
+                  t=rep(tt1, 4), 
+                  CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                  each= length(tt1)))
+
+plotdf_SexM_OH<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[3,]), t(b_u95_1eff[3,]), t(b_l95_1eff[3,]))),
+                  t=rep(tt1, 4), 
+                  CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                  each= length(tt1)))
+
+plotdf_SexF_OH<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[4,]), t(b_u95_1eff[4,]), t(b_l95_1eff[4,]))),
+                  t=rep(tt1, 4), 
+                  CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                  each= length(tt1)))
+
+plotdf_SexM_NHW<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                   ncol=1),t(b1_eff[5,]), t(b_u95_1eff[5,]), t(b_l95_1eff[5,]))),
+                   t=rep(tt1, 4), 
+                   CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                            each= length(tt1)))
+
+plotdf_SexF_NHW<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[6,]), t(b_u95_1eff[6,]), t(b_l95_1eff[6,]))),
+                  t=rep(tt1, 4), 
+                  CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                            each= length(tt1)))
+
+plotdf_SexM_NHB<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[7,]), t(b_u95_1eff[7,]), t(b_l95_1eff[7,]))),
+                  t=rep(tt1, 4), 
+                  CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                           each= length(tt1)))
+
+plotdf_SexF_NHB<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[8,]), t(b_u95_1eff[8,]), t(b_l95_1eff[8,]))),
+                  t=rep(tt1, 4), 
+                  CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                                    each= length(tt1)))
+
+plotdf_SexM_NHA<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[9,]), t(b_u95_1eff[9,]), t(b_l95_1eff[9,]))),
+                  t=rep(tt1, 4), 
+                  CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                                    each= length(tt1)))
+
+plotdf_SexF_NHA<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                  ncol=1),t(b1_eff[10,]), t(b_u95_1eff[10,]), t(b_l95_1eff[10,]))),
+                  t=rep(tt1, 4), 
+                  CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                                    each= length(tt1)))
+
+plotdf_SexM_ORIMR<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                       ncol=1),t(b1_eff[11,]), t(b_u95_1eff[11,]), t(b_l95_1eff[11,]))),
+                       t=rep(tt1, 4), 
+                       CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                                    each= length(tt1)))
+
+plotdf_SexF_ORIMR<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                     ncol=1),t(b1_eff[12,]), t(b_u95_1eff[12,]), t(b_l95_1eff[12,]))),
+                     t=rep(tt1, 4), 
+                     CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                                    each= length(tt1)))
+
+plotdf_HEI<- data.frame(Coefficients= as.vector(rbind(matrix(0, nrow=length(tt1), 
+                    ncol=1),t(b1_eff[13,]), t(b_u95_1eff[13,]), t(b_l95_1eff[13,]))),
+                            t=rep(tt1, 4), 
+                          CI= rep(c("0","Estimate","Upper 95%","Lower 95%"), 
+                                    each= length(tt1)))
+
+plotdf <- data.frame(rbind(plotdf_SexM_E1, plotdf_SexF_E1, 
+                     plotdf_SexM_OH,  plotdf_SexF_OH,
+                     plotdf_SexM_NHW, plotdf_SexF_NHW,
+                     plotdf_SexM_NHB, plotdf_SexF_NHB,
+                     plotdf_SexM_NHA, plotdf_SexF_NHA,
+                     plotdf_SexM_ORIMR, plotdf_SexF_ORIMR,
+                     plotdf_HEI), 
+                     Coefficient=rep(c("Male,Mexican American",
+                     "Female,Mexican American", 
+                     "Male,Other Hispanic",
+                     "Female,Other Hispanic",
+                     "Male,Non-Hispanic White",
+                     "Female,Non-Hispanic White", 
+                     "Male,Non-Hispanic Black",
+                     "Female,Non-Hispanic Black", 
+                     "Male,Non Hispanic Asian",
+                     "Female,Non Hispanic Asian", 
+                     "Male,Other Races(MR)",
+                     "Female,Other Races(MR)", 
+                     "HEI"), each= nrow(plotdf_intercept)),
+                     Ord = rep(c(1:13), each= nrow(plotdf_intercept)))
+
+# minimum/maximum for all the gender, ethnicities
+gen_eth_min<- min(b_l95_1eff[1:12,])
+gen_eth_max<- max(b_u95_1eff[1:12,])
+
+blank_data <- data.frame(Coefficient=rep(c("Male,Mexican American",
+                                           "Female,Mexican American", 
+                                           "Male,Other Hispanic",
+                                           "Female,Other Hispanic",
+                                           "Male,Non-Hispanic White",
+                                           "Female,Non-Hispanic White", 
+                                           "Male,Non-Hispanic Black",
+                                           "Female,Non-Hispanic Black", 
+                                           "Male,Non Hispanic Asian",
+                                           "Female,Non Hispanic Asian", 
+                                           "Male,Other Races(MR)",
+                                           "Female,Other Races(MR)", 
+                                           "HEI"), each= 2), 
+                        t = 0, Coefficients = 
+                          c(rep(c(gen_eth_min, gen_eth_max), 12),
+                            min(b_l95_1eff[13,]), max(b_u95_1eff[13,])),
+                         CI= rep(c("Lower 95%","Upper 95%"), 13),
+                         Ord=1)
+
+ggplot(data = plotdf, aes(x=t, y=Coefficients, fill=CI)) +
+  geom_path(aes(colour= as.factor(CI)), size=.9, alpha=1) +
+  labs(colour = "Coefficient") +
+  scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9", "#009E73")) +
+  facet_wrap( ~reorder(Coefficient, Ord), scales = "free_y") +
+  theme(axis.text=element_text(size=11),
+        axis.title=element_text(size=11)) +
+  theme(text=element_text(size=11)) +
+  geom_blank(data = blank_data, aes(x = t, y = Coefficients)) +
+  ylab(label = "Estimated Coefficients") + theme_bw() 
+
+ggsave(file= "Rplot_betafunctional_linear2_effects.eps", width = 9, height = 10) 
+
+
+###########################################
+# Codes to create figure 3 in the document
+###########################################
+
+# number of values for each of Age and BMI used to create the grid for figure 3
+m2<- 500
+
+# read the covaraiets in the PLFSI model
+rnames<- read.csv("Output_Age20to80_noTAC_rnames3.csv", header = T)[,-1]
+
 # consider equidistant grid of variables BMXBMI, RIDAGEYR.y over their range. 
 # For each variables consider of length = 100. 
 
@@ -233,7 +290,7 @@ tsd_grid_level<- expand.grid(data.frame(BMI=x_, Age=y_))
 x<- xin<- tsd_grid
 
 # read the estimated index parameter
-th<- matrix(read.csv("Theta_Hat.csv")[,-1], ncol =1)
+th <- matrix(read.csv("Theta_Hat.csv")[,-1], ncol =1)
 Theta_hat<- th
 
 q50<- floor(which(tt>=0.50))[1]   # check index for 50th percentile 
@@ -273,6 +330,9 @@ for(j in 1:length(indt)) {
 }
 proc.time() - t
 
+yh_mth1_int <- sapply(1:nrow(yh_males_eth1), function(i) fdadensity:::trapzRcpp(X = tt, 
+                                                  Y = yh_males_eth1[i, ]))
+
 # save the quantiles for future use 
 write.csv(yh_males_eth1, "Pedicted_transport_percentiles.csv")
 Yh<- as.data.frame(yh_males_eth1[,c(q50, q75, q90, q97)])
@@ -296,6 +356,10 @@ df_q90<- cbind.data.frame(BMI=tsd_grid_level$BMI,
 df_q97<- cbind.data.frame(BMI=tsd_grid_level$BMI,
                           AGE=tsd_grid_level$Age,
                           Quantiles=Yh$Q97)
+
+df_qint<- cbind.data.frame(BMI= tsd_grid_level$BMI,
+                           AGE= tsd_grid_level$Age,
+                           Integral = yh_mth1_int)
 
 ggplot(df_q50, aes(x=BMI, y=AGE)) +
   geom_raster(aes(fill = Quantiles)) +
@@ -337,6 +401,16 @@ ggplot(df_q97, aes(x=BMI, y=AGE)) +
 ggsave(file = "Rplot_quantile97_prediction.eps", width = 6.5, height = 5.5)
 
 
+ggplot(df_qint, aes(x=BMI, y=AGE)) +
+  geom_raster(aes(fill = Integral)) +
+  scale_fill_viridis() +
+  theme(axis.text=element_text(size=15),
+        axis.title=element_text(size=15)) +
+  theme(text=element_text(size=15)) +
+  ggtitle("Integrals of Quantiles")
+ggsave(file = "Rplot_quantile_integral.eps", width = 6.5, height = 5.5)
+
+
 ########
 # Compute the integral of the quantiles
 
@@ -364,56 +438,11 @@ ggsave(file = "Rplot_quantile_integrals.eps", width = 6.5, height = 5.5)
 # number of values for each of Age and BMI used to create the grid for figure 3
 m2<- 60
 
-# read the functional beta coefficients
-b= read.csv("Output_Age20to80_noTAC_betas3.csv", header = T)[,-1]
-
 # read the covaraiets in the PLFSI model
 rnames<- read.csv("Output_Age20to80_noTAC_rnames3.csv", header = T)[,-1]
 
-# read and manipulate the dataset
-datos <- read.csv("datosalex(1).csv")
-indices <- round(seq(188,687, length=500))
-
-colnames(datos)[indices] = paste("X", 1:500, sep="")
-datos= datos[, c(1:187, indices)]
-
-# subset data for age 20-80 years
-datos<- subset(datos, datos$RIDAGEYR.x >= 20 & datos$RIDAGEYR.x <= 80)  
-
-# subset data for BMI 15-40
-datos<- subset(datos, datos$BMXBMI >= 18.5 & datos$BMXBMI <= 40)  
-#datos<- datos[-c(734, 1216, 2094, 2699, 2958, 3092, 3933, 3963, 4232), ]
-
-datosfda= datos[,188:687]
-datosfda= as.matrix(datosfda)
-datosfda[which(datosfda>280)]= datosfda[which(datosfda>280)-1]+0.5
-datos[,188:687]= datosfda
-
-tt= seq(0,1,length=500)
-objetofda= fdata(datosfda,argvals = tt)
-
-si_vars <- c("BMXBMI","RIDAGEYR.y")  # covariates for Single Index part
-linear_vars <- c("RIAGENDR","RIDRETH3","HEI")  # covariates for Linear part
-# question: why should we choose HEI if not significant. 
-# scale 
-linear_vars_numerical<- c("HEI")
-linear_vars_categorical<- c("RIAGENDR","RIDRETH3")
-
-# the survey variables
-datosx <- cbind.data.frame(scale(datos[,si_vars]), HEI=scale(datos[,linear_vars_numerical]),
-                           datos[,linear_vars_categorical], 
-                           survey_wt= datos[,"wtmec4yr_adj_norm"],
-                           survey_id=datos[,"SDMVPSU"], 
-                           survey_strata= datos[,"SDMVSTRA"])
-
-datosx$RIAGENDR<- as.factor(datosx$RIAGENDR)
-datosx$RIDRETH3<- as.factor(datosx$RIDRETH3)
-datosx$survey_strara<- as.factor(datosx$survey_strata)
-datosx$survey_id<- as.factor(datosx$survey_id)
-
 # consider equidistant grid of variables BMXBMI, RIDAGEYR.y over their range. 
 # For each variables consider of length = m2. 
-
 
 x_ <- seq(min(datos$BMXBMI), max(datos$BMXBMI), len=m2)
 y_ <- seq(min(datos$RIDAGEYR.y), max(datos$RIDAGEYR.y), len=m2)
@@ -490,9 +519,7 @@ for (j in 1:length(knots_all)) {
 
 legend(-1, 25, legend=c("t=0.50","t=0.75","t=0.90","t=0.97"),
        col=c("#000000", "#D55E00", "#009E73", "#0072B2"), 
-       lwd =c(1.5,2,2.5,3),
-       lty=c(1,1,1,1), cex=1.2, text.font=10,
-       bg='lightgrey')
+       lwd=c(1.5,2,2.5,3), lty=c(1,1,1,1), cex=1.2, text.font=10, bg='lightgrey')
 
 #grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
 #     lwd = par("lwd"), equilogs = TRUE)
@@ -508,6 +535,4 @@ dev.off()
 
 
 # computation of the integral of the beta coefficients:
-
-
 
