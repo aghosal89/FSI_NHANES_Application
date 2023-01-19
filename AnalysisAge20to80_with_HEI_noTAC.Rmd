@@ -34,32 +34,28 @@ source("wn_cost.R", local =knitr::knit_global())
 ```
 
 ```{r, warning= FALSE}
-# Aritra's library for R operations
-#setwd("~/Documents/FSI/Application /alex/FSI_NHANES/Archive_PLFSI")
-# Aritra's library for R operations in RAS server
-setwd("~/MATLAB/Archive_PLFSI")
 
 # Use your own directory
 
-# setwd("C:/Users/Admin/Downloads/Archive_rmd_65")
 
 # read the dataset
 datos= read.csv("datosalex(1).csv")
-indices= round(seq(188,687, length=500))
 
+# column indices for distributional representations
+indices= round(seq(188,687, length=500))
 colnames(datos)[indices]= paste("X", 1:500, sep="")
 datos= datos[, c(1:187, indices)]
 
-# subset data for age 30-80 years
+# subset data for age 20-80 years
 datos<- subset(datos, datos$RIDAGEYR.x >= 20 & datos$RIDAGEYR.x <= 80)  
 
 # subset data for BMI in the range 18.5 - 40
 datos<- subset(datos, datos$BMXBMI >= 18.5 & datos$BMXBMI <= 40)  
-#datos<- datos[-c(734, 1216, 2094, 2699, 2958, 3092, 3933, 3963, 4232), ]
 
 # create the response data as functional data
-datosfda= datos[,188:687]
+datosfda= datos[,188:687] 
 datosfda= as.matrix(datosfda)
+
 datosfda[which(datosfda>280)]= datosfda[which(datosfda>280)-1]+0.5
 datos[,188:687]= datosfda
 
@@ -72,32 +68,31 @@ si_vars <- c("BMXBMI","RIDAGEYR.y")  # covariates for Single Index part
 linear_vars<- c("RIAGENDR","RIDRETH3","HEI")  # covariates for Linear part
 linear_vars_numerical <- "HEI"  # numeric covariates for Linear part
 linear_vars_categorical <- c("RIAGENDR","RIDRETH3")  # categorical covariates for Linear part
-#datosx$Gender<- as.factor(datosx$RIAGENDR)
-
 
 # the survey variables
-datosx <- cbind.data.frame(scale(datos[,si_vars]), datos[,linear_vars_categorical], HEI=scale(datos[,linear_vars_numerical]), survey_wt= datos[,"wtmec4yr_adj_norm"],survey_id=datos[,"SDMVPSU"], survey_strata= datos[,"SDMVSTRA"])
-datosx$RIAGENDR<- as.factor(datosx$RIAGENDR)
+datosx <- cbind.data.frame(scale(datos[,si_vars]), datos[,linear_vars_categorical], HEI=scale(datos[,linear_vars_numerical]), survey_wt= datos[,"wtmec4yr_adj_norm"], survey_id=datos[,"SDMVPSU"], survey_strata= datos[,"SDMVSTRA"])
 
+datosx$RIAGENDR<- as.factor(datosx$RIAGENDR)
 datosx$RIDRETH3<- as.factor(datosx$RIDRETH3)
 datosx$survey_strara<- as.factor(datosx$survey_strata)
 datosx$survey_id<- as.factor(datosx$survey_id)
-#datosx$RIAGENDR<- relevel(datosx$RIAGENDR, ref = 2)  # Apply relevel function
+
 # obtain the global Frechet model
 
-## compute the regression formula for the model
+## compute the regression formula for the Global Frechet model
 formula_lv<- paste(c(paste(linear_vars_categorical, collapse="*"),linear_vars_numerical), collapse = "+")
 formula_gfr<- paste(formula_lv, paste(paste(si_vars),collapse="+"),sep="+")
 data_temp <- cbind.data.frame(datosx, datosfda)
 data_analysis_svy <- svydesign(id= ~survey_id, strata = ~survey_strata, 
-                               weights= ~survey_wt,data = data_temp,nest = TRUE)
+                               weights= ~survey_wt, data = data_temp, nest = TRUE)
   
-res<- survey2wassersteinmodel(formula=formula_gfr, data_analysis_svy, objetofda=objetofda)   # these also have to be quantiles
+# run the Global Frechet model with the survey weights
+res<- survey2wassersteinmodel(formula=formula_gfr, data_analysis_svy, objetofda=objetofda)   
 
-# obtain R-squared 
+# obtain R-squared over all the quantiles 
 res$r2
   
-# obtain integrated R-sauared for the quantile range [0, 0.97].
+# obtain integrated R-squared across the orders of quantile (tt) in the range [0, 0.97].
 m97 <- floor(which(tt>=0.97))[1]
 tt97 <- tt[1:m97]
 fdadensity:::trapzRcpp(X=tt97, Y=res$R2_vector[1:m97])
@@ -112,6 +107,9 @@ frsq$Adj_Frechet_R2
 
 
 ```{r}
+
+# run the Partially Linear Frechet Single-Index regression model
+
 lmod<- PLFSI_model(si_vars = si_vars, linear_vars = linear_vars, datosfda = datosfda, tt =tt, 
                    nsp = 4, L = 0, etaStart = NULL, sp=4, dfs=9, formula_lv=formula_lv, datosx= datosx)
 
@@ -124,16 +122,16 @@ lmod$Adj_Frechet_R2
 # report the R^2
 lmod$R2
 
-# obtain integrated R-sauared for the quantile range [0, 0.97].
+# obtain integrated R-squared for the quantile range [0, 0.97].
 m97 <- floor(which(tt>=0.97))[1]
 tt97 <- tt[1:m97]
 fdadensity:::trapzRcpp(X=tt97, Y=lmod$R2_vector[1:m97])
 
-# estimate of index parameter
+# estimate of index parameter theta
 lmod$thetaHat
 write.csv(lmod$thetaHat, "Theta_Hat.csv")
 
-# To check if all points converged
+# To check if all points converged, 0 indicates convergence
 lmod$converge
 
 # obtain the residuals with patient id
@@ -144,7 +142,7 @@ colnames(res_id)<- c("SEQN", paste("X", c(1:ncol(lmod$residuals)), sep = ""))
 write.csv(res_id, "Output_Age20to80_noTAC_residuals.csv") 
 write.csv(lmod$predictions, "Output_Age20to80_noTAC_predictions.csv")
 
-# to plot of the beta estimates
+# save the beta estimates for plotting later
 betas  <- lmod$betaj
 rnames <- rownames(betas)
 
@@ -157,18 +155,17 @@ write.csv(rnames, "Output_Age20to80_noTAC_rnames.csv")
 
 ```{r}
 
-bs_fun <- as.matrix(datosx[,si_vars])%*%(lmod$thetaHat)
+# using the estimated index parameter from the prior chunk
   
-#bs_fun <- as.matrix(datosx[,si_vars])%*%(thetahat)
+bs_fun <- as.matrix(datosx[,si_vars])%*%(lmod$thetaHat)
 
-sp<- 4
-dfs<- 9
+sp<- 4  # order of B-spline bases
+dfs<- 9 # degrees of freedom 
 
   bs_data<- data.frame(bs(x=bs_fun, degree=sp, df=dfs))
   colnames(bs_data) <- paste("BS", seq(1:ncol(bs_data)), sep = "")
   data_temp<- cbind.data.frame(datosx, bs_data)
   
-  ## modifying the inputs of the algorithm
   
   formula<- paste(formula_lv, paste(colnames(bs_data),collapse="+"),sep="+")
   data_temp<- cbind.data.frame(data_temp, datosfda)
@@ -184,7 +181,7 @@ dfs<- 9
   m2 = svyglm(formulafinal, design=data_analysis_svy, family=stats::gaussian())
   
   # the following function creates a vector of 0s and 1s with 1s specified at the 
-  # 
+  
   vec1s<- function(vec_pos, lenv) {
     vec_temp<- rep(0, lenv)
     vec_temp[vec_pos]<- 1
@@ -206,7 +203,7 @@ dfs<- 9
               vec1s(c(1,2,7,22),l2),      # male, other races incl. multi-racial
               vec1s(c(1,7),l2),           # female, other races incl. multi-racial
               vec1s(c(8),l2)),            # Healthy Eating Index
-              byrow = TRUE, ncol=22)
+              byrow = TRUE, ncol=l2)
   
   betaj= matrix(0, nrow=length(m2$coefficients), ncol=ncol(objetofda$data))
   betaj_ucl= matrix(0, nrow=length(m2$coefficients), ncol=ncol(objetofda$data))
@@ -216,29 +213,31 @@ dfs<- 9
   betaeffects_ucl= matrix(0, nrow=dim(C)[1], ncol=ncol(objetofda$data))
   betaeffects_lcl= matrix(0, nrow=dim(C)[1], ncol=ncol(objetofda$data))
   
-  #setup parallel backend to use many processors
-  t= proc.time()
+  t3= proc.time()
+  
+  # looping over the order of quantile tt in [0,1].
   for(i in 1:ncol(objetofda$data)) {
     
     formulaaux= paste("X", i, sep="")
-    formulaaux= paste(formulaaux,"~",sep="")
+    formulaaux= paste(formulaaux,"~", sep="")
     
-    formulafinal= paste(formulaaux, formula,sep="")
+    formulafinal= paste(formulaaux, formula, sep="")
     formulafinal= as.formula(formulafinal)
-    m=svyglm(formulafinal, design=data_analysis_svy, family=stats::gaussian())
-    vcovm<- survey:::vcov.svyglm(m)
-    meffect<-matrix(as.vector(m$coefficients), ncol=1)
+    m = svyglm( formulafinal, design=data_analysis_svy, family=stats::gaussian())
+    vcovm <- survey:::vcov.svyglm(m)
+    meffect <- matrix( as.vector(m$coefficients), ncol=1)
     
     betaj[,i]<- meffect
     betaj_lcl[,i]<- confint(m)[,1]
     betaj_ucl[,i]<- confint(m)[,2]
     
     beta_effects[,i]<- as.vector(C%*%(meffect))
-    betaeffects_ucl[,i]= as.vector(C%*%(meffect)) + qt(0.975, m$df.residual)* sqrt(diag(C%*%vcovm%*%t(C)))
-    betaeffects_lcl[,i]= as.vector(C%*%(meffect)) - qt(0.975, m$df.residual)* sqrt(diag(C%*%vcovm%*%t(C)))
+    betaeffects_ucl[,i]= as.vector(C %*% (meffect)) + qt(0.975, m$df.residual) * sqrt( diag( C%*% vcovm %*% t(C)))
+    betaeffects_lcl[,i]= as.vector(C %*% (meffect)) - qt(0.975, m$df.residual) * sqrt( diag( C%*% vcovm %*% t(C)))
     
   }
-  
+
+proc.time()-t3
 write.csv(betaj, "Output_Age20to80_noTAC_betas.csv")
 write.csv(betaj_ucl, "Output_Age20to80_noTAC_betas_UCL.csv" )
 write.csv(betaj_lcl, "Output_Age20to80_noTAC_betas_LCL.csv" )
