@@ -162,7 +162,7 @@ First create a folder in your computer and keep it as the working directory for 
                      
   ## Step 2: Run the codes that utilize the above functions:
   
-  - ### AnalysisAge30to80_with_HEI_noTAC.Rmd
+  - ### AnalysisAge20to80_with_HEI_noTAC.Rmd
   
     Description: 
     
@@ -186,16 +186,16 @@ First create a folder in your computer and keep it as the working directory for 
           3.  Output_Age20to80_noTAC_residuals.csv: The model residuals obtained for every order of quantile t.  
           4.  Output_Age20to80_noTAC_predictions.csv: The model predictions obtained for every order of quantile t. 
           5.  Output_Age20to80_noTAC_betas.csv: Estimated beta coefficints for every order of quantile t.
-          6.  Output_Age20to80_noTAC_rnames.csv: 
-          7.  Output_Age20to80_noTAC_betas_UCL.csv
-          8.  Output_Age20to80_noTAC_betas_LCL.csv
-          9.  Output_Age20to80_noTAC_betaeffects.csv
-          10. Output_Age20to80_noTAC_betaeffects_UCL.csv
-          11. Output_Age20to80_noTAC_betaeffects_LCL.csv
+          6.  Output_Age20to80_noTAC_rnames.csv: The estimated parameters in the model.
+          7.  Output_Age20to80_noTAC_betas_UCL.csv: pointwise 95% Upper Confidence limits of estimated parameters.
+          8.  Output_Age20to80_noTAC_betas_LCL.csv: pointwise 95% Lower Confidence limits of estimated parameters. 
+          9.  Output_Age20to80_noTAC_betaeffects.csv: pointwise 95% Upper Confidence limits of estimated effects.
+          10. Output_Age20to80_noTAC_betaeffects_UCL.csv: pointwise 95% Upper Confidence limits of estimated effects.
+          11. Output_Age20to80_noTAC_betaeffects_LCL.csv: pointwise 95% Lower Confidence limits of estimated effects.
           
   - ### Plots.R
   
     Description: 
     
-          The codes to re-create the plots in figures 1 - 4 in the main paper. 
+          The codes to re-create the plots in figures 1 - 5 in the main paper. 
 
