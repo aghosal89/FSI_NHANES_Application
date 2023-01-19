@@ -5,6 +5,7 @@ library("survey")
 library("fda.usc")
 library("viridis")
 library("ggplot2")
+library("energy")
 
 # Set library for R oprations
 setwd("~/Documents/FSI/Application /alex/FSI_NHANES/Archive_PLFSI")
@@ -80,10 +81,10 @@ b_effects_u95<- read.csv("Output_Age20to80_noTAC_betaeffects_ucl.csv")[,-1]
 b_effects_l95<- read.csv("Output_Age20to80_noTAC_betaeffects_lcl.csv")[,-1]
 
 # sequence of order of quantiles 
-tt= seq(0,1,length=ncol(b))
+tt= seq(0,1,length=ncol(b_effects))
 
 # creating the plots for order of quantile in the range [0, 0.97].
-qrnt <- floor(which(tt>=0.97))[1]
+qrnt <- floor(which(tt>0.97))[1]
 tt1<- tt[1:qrnt]
 
 b1_eff<- b_effects[,c(1:qrnt)]
@@ -532,4 +533,61 @@ postscript(file = "Rplot_histogram_ofSI.eps", width = 4.5, height = 4.5, paper =
 hist(u_2, freq=FALSE, main="Histogram of Single Index", xlab= "")
 dev.off()
 
+
+
+# computation of the integral of the beta coefficients:
+###########################################
+# Codes to create the figure 5 in document
+###########################################
+
+# we read the model residuals from the fitted PLSIFR-model
+datosw <- read.csv("Output_Age20to80_noTAC_residuals.csv")
+
+# Compute the TAC variable for each participant
+datosw$TAC= apply(datos[,c(188:687)],1,mean) 
+
+x2= kgroups(1/100*datosw[,round(seq(3,qrnt,length=100))],k=3)  # why 40 was deducted?
+datosw$grupo= x2$cluster
+fda= fdata(datosw[,c(3:502)], argvals = seq(0,1,length=500))
+cluster1= fda[x2$cluster==1,1:qrnt]
+cluster2= fda[x2$cluster==2,1:qrnt]
+cluster3= fda[x2$cluster==3,1:qrnt]
+
+media1= func.mean(cluster1)
+media2= func.mean(cluster2)
+media3= func.mean(cluster3)
+
+setEPS()
+postscript(file= "clusteringresults.eps", horizontal = FALSE, onefile = FALSE, 
+           paper = "special", height = 6, width = 7)
+par(mfrow= c(2,3))
+plot(cluster1[,1:qrnt], main="Cluster 1", ylim= c(-30,95), xlim=c(0,1.001))
+grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
+     lwd = par("lwd"), equilogs = TRUE)
+
+plot(cluster2[,1:qrnt], main="Cluster 2",ylim= c(-30,95), xlim=c(0,1.001))
+grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
+     lwd = par("lwd"), equilogs = TRUE)
+
+plot(cluster3[,1:qrnt], main="Cluster 3",ylim= c(-30,95), xlim=c(0,1.001))
+grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
+     lwd = par("lwd"), equilogs = TRUE)
+
+boxplot(datos2$TAC~datosw$grupo, ylim= c(0,28), ylab= "TAC", xlab="Cluster",
+        pch=16, cex=0.4)
+grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
+     lwd = par("lwd"), equilogs = TRUE)
+
+boxplot(datos2$LBXSGL_43~datosw$grupo, ylim= c(40,660), ylab= "Glucose, mg/dL", 
+        xlab="Cluster", pch=16, cex=0.4)
+grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
+     lwd = par("lwd"), equilogs = TRUE)
+
+#boxplot(datos2$LBXGH_39~datosw$grupo, ylim= c(4,15), ylab= "A1C, %", xlab="Cluster")
+boxplot(datos2$LBXSCR_43~datosw$grupo, ylim= c(0.5,7), ylab= "Creatinine, mg/dL",
+        pch=16, cex=0.4, xlab="Cluster")
+grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
+     lwd = par("lwd"), equilogs = TRUE)
+
+dev.off()
 
