@@ -70,11 +70,9 @@ First create a folder in your computer and keep it as the working directory for 
    
            1) r^2           : the coefficient of determination (R-squared) of the fitted model.
            2) betaj         : functional beta coefficients of the fitted regression models. 
-           3) beta_lcl      : pointwise lower 95% Confidence Interval of the beta parameter
-           4) beta_ucl      : pointwise upper 95% Confidence Interval of the beta parameter
-           5) predicciones  : the prediction of regression model.
-           6) residuos      : the residuals of the fitted model obtained for each point on the grid [0,1]
-           7) r2vec         : a vector of length same as number of columns in predicciones 
+           3) predicciones  : the prediction of regression model.
+           4) residuos      : the residuals of the fitted model obtained for each point on the grid [0,1]
+           5) r2vec         : a vector of length same as number of columns in predicciones 
                               above, containing the multiple R-squared for each percentile.
            
     
