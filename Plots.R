@@ -226,8 +226,8 @@ plotdf <- data.frame(rbind(plotdf_SexM_E1, plotdf_SexF_E1,
                      "Female,Non Hispanic Asian", 
                      "Male,Other Races(MR)",
                      "Female,Other Races(MR)", 
-                     "HEI"), each= nrow(plotdf_intercept)),
-                     Ord = rep(c(1:13), each= nrow(plotdf_intercept)))
+                     "HEI"), each= nrow(plotdf_HEI)),
+                     Ord = rep(c(1:13), each= nrow(plotdf_HEI)))
 
 # minimum/maximum for all the gender, ethnicities
 gen_eth_min<- min(b_l95_1eff[1:12,])
@@ -274,7 +274,8 @@ ggsave(file= "Rplot_betafunctional_linear2_effects.eps", width = 9, height = 10)
 m2<- 500
 
 # read the covaraiets in the PLFSI model
-rnames<- read.csv("Output_Age20to80_noTAC_rnames3.csv", header = T)[,-1]
+rnames<- read.csv("Output_Age20to80_noTAC_rnames.csv", header = TRUE)[,-1]
+b<- read.csv("Output_Age20to80_noTAC_betas.csv", header = TRUE)[,-1]
 
 # consider equidistant grid of variables BMXBMI, RIDAGEYR.y over their range. 
 # For each variables consider of length = 100. 
@@ -282,7 +283,7 @@ rnames<- read.csv("Output_Age20to80_noTAC_rnames3.csv", header = T)[,-1]
 x_ <- seq(min(datos$BMXBMI), max(datos$BMXBMI), len=m2)
 y_ <- seq(min(datos$RIDAGEYR.y), max(datos$RIDAGEYR.y), len=m2)
 
-temp_si_data<- data.frame(BMXBMI= seq(min(datosx$BMXBMI),max(datosx$BMXBMI), len=m2), 
+temp_si_data<- data.frame(BMXBMI= seq(min(datosx$BMXBMI), max(datosx$BMXBMI), len=m2), 
                           RIDAGEYR.y=seq(min(datosx$RIDAGEYR.y),max(datosx$RIDAGEYR.y),len=m2))
 
 # consider the variables on a 2 dimensional grid to construct the contour plot. 
@@ -303,7 +304,7 @@ sp <- 4
 dfs<- 9
 
 u_ <- as.matrix(tsd_grid)%*%th
-bs_data1 <- data.frame(splines::bs(x=u_, degree=sp, df=dfs))
+bs_data1 <- data.frame(splines2::dbs(x=u_, degree=sp, df=dfs))
 
 colnames(bs_data1)<- paste("BS", seq(1:ncol(bs_data1)), sep ="")
 
@@ -331,17 +332,12 @@ for(j in 1:length(indt)) {
 }
 proc.time() - t
 
-yh_mth1_int <- sapply(1:nrow(yh_males_eth1), function(i) fdadensity:::trapzRcpp(X = tt, 
-                                                  Y = yh_males_eth1[i, ]))
-
 # save the quantiles for future use 
 write.csv(yh_males_eth1, "Pedicted_transport_percentiles.csv")
 Yh<- as.data.frame(yh_males_eth1[,c(q50, q75, q90, q97)])
 colnames(Yh)<- c("Q50","Q75","Q90","Q97")
 
-#yh_males_eth1$Integral<- sapply(1:nrow(yh_males_eth1), 
-#        function(i) fdadensity:::trapzRcpp(X = tt, Y = as.numeric(yh_males_eth1[i,])))
-  
+
 df_q50<- cbind.data.frame(BMI=tsd_grid_level$BMI,
                        AGE=tsd_grid_level$Age,
                        Quantiles=Yh$Q50)
@@ -402,16 +398,6 @@ ggplot(df_q97, aes(x=BMI, y=AGE)) +
 ggsave(file = "Rplot_quantile97_prediction.eps", width = 6.5, height = 5.5)
 
 
-ggplot(df_qint, aes(x=BMI, y=AGE)) +
-  geom_raster(aes(fill = Integral)) +
-  scale_fill_viridis() +
-  theme(axis.text=element_text(size=15),
-        axis.title=element_text(size=15)) +
-  theme(text=element_text(size=15)) +
-  ggtitle("Integrals of Quantiles")
-ggsave(file = "Rplot_quantile_integral.eps", width = 6.5, height = 5.5)
-
-
 ########
 # Compute the integral of the quantiles
 
@@ -440,7 +426,7 @@ ggsave(file = "Rplot_quantile_integrals.eps", width = 6.5, height = 5.5)
 m2<- 60
 
 # read the covaraiets in the PLFSI model
-rnames<- read.csv("Output_Age20to80_noTAC_rnames3.csv", header = T)[,-1]
+rnames<- read.csv("Output_Age20to80_noTAC_rnames.csv", header = T)[,-1]
 
 # consider equidistant grid of variables BMXBMI, RIDAGEYR.y over their range. 
 # For each variables consider of length = m2. 
@@ -459,7 +445,7 @@ tsd_grid_level<- expand.grid(data.frame(BMI=x_, Age=y_))
 u_2<- as.matrix(cbind(datosx$BMXBMI, datosx$RIDAGEYR.y))%*%th
 u_2 <- sort(u_2)
 
-aspl1.1<- splines::bs(u_2, df= dfs, knots = NULL, degree = sp, 
+aspl1.1<- splines2::dbs(u_2, df= dfs, knots = NULL, degree = sp, 
                       intercept = FALSE)
 
 #####################
@@ -561,30 +547,33 @@ setEPS()
 postscript(file= "clusteringresults.eps", horizontal = FALSE, onefile = FALSE, 
            paper = "special", height = 6, width = 7)
 par(mfrow= c(2,3))
-plot(cluster1[,1:qrnt], main="Cluster 1", ylim= c(-30,95), xlim=c(0,1.001))
+plot(cluster1[,1:qrnt], main="Cluster 1", ylim= c(-30,95), xlim=c(0,1.001),
+     ylab="Residuals")
 grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
      lwd = par("lwd"), equilogs = TRUE)
 
-plot(cluster2[,1:qrnt], main="Cluster 2",ylim= c(-30,95), xlim=c(0,1.001))
+plot(cluster2[,1:qrnt], main="Cluster 2",ylim= c(-30,95), xlim=c(0,1.001),
+     ylab="Residuals")
 grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
      lwd = par("lwd"), equilogs = TRUE)
 
-plot(cluster3[,1:qrnt], main="Cluster 3",ylim= c(-30,95), xlim=c(0,1.001))
+plot(cluster3[,1:qrnt], main="Cluster 3",ylim= c(-30,95), xlim=c(0,1.001)
+     , ylab="Residuals")
 grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
      lwd = par("lwd"), equilogs = TRUE)
 
-boxplot(datos2$TAC~datosw$grupo, ylim= c(0,28), ylab= "TAC", xlab="Cluster",
+boxplot(log(datos$TAC)~datosw$grupo, ylim= c(7,11), ylab= "log TAC", xlab="Cluster",
         pch=16, cex=0.4)
 grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
      lwd = par("lwd"), equilogs = TRUE)
 
-boxplot(datos2$LBXSGL_43~datosw$grupo, ylim= c(40,660), ylab= "Glucose, mg/dL", 
+boxplot(log(datos$LBXSGL_43)~datosw$grupo, ylim= c(3.5,6.8), ylab= "log Glucose, mg/dL", 
         xlab="Cluster", pch=16, cex=0.4)
 grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
      lwd = par("lwd"), equilogs = TRUE)
 
 #boxplot(datos2$LBXGH_39~datosw$grupo, ylim= c(4,15), ylab= "A1C, %", xlab="Cluster")
-boxplot(datos2$LBXSCR_43~datosw$grupo, ylim= c(0.5,7), ylab= "Creatinine, mg/dL",
+boxplot(log(datos$LBXSCR_43)~datosw$grupo, ylim= c(-1,2), ylab= "log Creatinine, mg/dL",
         pch=16, cex=0.4, xlab="Cluster")
 grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted",
      lwd = par("lwd"), equilogs = TRUE)
