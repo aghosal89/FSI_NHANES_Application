@@ -20,15 +20,18 @@ This function computes polar coordinates from the cartesian coordinates in p-dim
 
 ### polar2cart.R
 
-##### Description: 
+#### Description: 
 
 This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' function above.
 
-Inputs:
-•	eta : a (p-1) dimensional vector.
-•	r      : radius of the polar coordinates (set default, r=1).
+#### Inputs:
 
-Output: cartesian coordinates in p-dimensional space.
+- 	eta    : a (p-1) dimensional vector.
+- 	r      : radius of the polar coordinates (set default, r=1).
+
+#### Output: 
+
+- cartesian coordinates in p-dimensional space.
 
 3.	cudratico.R
 
