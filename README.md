@@ -235,27 +235,24 @@ For the “PLFSI_bootstrap.R” script,
 
 Sources: 
 
-•	adj_fr_r2.R
-•	PLFSI_model.R
-•	survey2wassersteinmodel_2.R
-•	wn_cost.R
+  - adj_fr_r2.R
+  - PLFSI_model.R
+  - survey2wassersteinmodel_2.R
+  - wn_cost.R
 
 Input:   
 
-•	The dataset “datosalex(1).csv” (link above).
-•	“Boot_survey_data.csv” (link above).
-•	“Output_Age20to80_noTAC_betaeffects.csv” file as output from the file “AnalysisAge20to80_with_HEI_noTAC.Rmd”. 
+  - The dataset “datosalex(1).csv”.
+  - “Boot_survey_data.csv”.
+  - “Output_Age20to80_noTAC_betaeffects.csv”. 
 
 Outputs:
 
-•	“Bootstrap_lower95_ConfidenceBound.csv”: the 95% lower confidence bounds for the estimated model parameter effects. 
-
-•	“Bootstrap_upper95_ConfidenceBound.csv”: the 95% upper confidence bounds for the estimated model parameter effects.
-
-
+  - “Bootstrap_lower95_ConfidenceBound.csv”: the 95% lower confidence bounds for the estimated model parameter effects.
+  - “Bootstrap_upper95_ConfidenceBound.csv”: the 95% upper confidence bounds for the estimated model parameter effects.
 
 
 
 Plots and figures in the document
 
-To run all the plots and figures in the document run the
+To run all the plots and figures in the document run the script Plots.R.
