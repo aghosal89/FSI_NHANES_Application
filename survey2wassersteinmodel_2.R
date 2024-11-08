@@ -1,4 +1,3 @@
-
 ## This function computes the metrics of model performance utilizing the survey weights
 
 ## Inputs:
@@ -6,6 +5,7 @@
 #  1) formula           - a character representing the formula for regression.
 #  2) data_analysis_svy - a survey GLM object. 
 #  3) objectofda        - the functional data representation of the response quantiles
+#  4) xout              - the covariate values where prediction is required.
 
 ## Outputs:
 
@@ -17,30 +17,46 @@
 #  5) r2vec          - a vector of length same as number of columns in predicciones 
 #                      above, containing the multiple R-squared for each percentile.
 
+## R libraries needed to run this function:
 
-survey2wassersteinmodel <- function(formula=formula, data_analysis_svy=data_analysis_svy, 
-                                    objetofda= objetofda) {
-  library("survey")
+# survey
+
+## Other functions from this repository needed to run this function:
+
+# 'cuadratico.R'
+
+survey2wassersteinmodel_2 <- function(formula=NULL, data_analysis_svy=NULL, 
+                                    objetofda= NULL, xout=NULL) {
   
-  prediciones = matrix(0, nrow= dim(data_analysis_svy$variables)[1], ncol= ncol(objetofda$data))
-  residuos <- prediciones
-  residuos2 <- prediciones
-  r2vec<- rep(NA, dim(prediciones)[2])
+  prediciones_in = matrix(0, nrow= dim(data_analysis_svy$variables)[1], 
+                       ncol= ncol(objetofda$data))
+  
+  residuos <- residuos2<- prediciones_in2 <- prediciones_in  # for the in-sample
+  
+  if(!is.null(xout)) {
+  prediciones_out = matrix(0, nrow= dim(xout)[1], ncol= ncol(objetofda$data))
+  }
+  
+  r2vec<- rep(NA, dim(prediciones_in)[2])
   formulaaux= paste("X", 1, sep="")
   formulaaux= paste(formulaaux, "~", sep="")
   
-  formulafinal= paste(formulaaux, formula,sep="")
-  formulafinal= as.formula(formulafinal)  
+  formulafinal <- paste(formulaaux, formula, sep="")
+  formulafinal <- as.formula(formulafinal)  
   
+  #xout <- as.data.frame(xout)
   m2 = svyglm(formulafinal, design=data_analysis_svy, family=stats::gaussian())
+  #pred<- as.matrix(predict.glm(m2, newdata = data.frame(xout), type="response"))
+  
   #print(summary(m2))
   betaj= matrix(0, nrow=length(m2$coefficients), ncol=ncol(objetofda$data))
   #betaj_ucl= matrix(0, nrow=length(m2$coefficients), ncol=ncol(objetofda$data))
   #betaj_lcl= matrix(0, nrow=length(m2$coefficients), ncol=ncol(objetofda$data))
+  #pred<- matrix(0, nrow= )
   
   # obtain the survey weights
   w= data_analysis_svy$variables$survey_wt
-  w= w/sum(w)
+  w = w/sum(w)
   
   #setup parallel backend to use many processors
   t= proc.time()
@@ -54,12 +70,14 @@ survey2wassersteinmodel <- function(formula=formula, data_analysis_svy=data_anal
     m=svyglm(formulafinal, design=data_analysis_svy, family=stats::gaussian())
     
     aux= as.numeric(m$residuals)
-    betaj[,i]= as.numeric(m$coefficients)
-    #ci<- confint(m)
-    #betaj_ucl[,i]= as.numeric(ci[,2])
-    #betaj_lcl[,i]= as.numeric(ci[,1])
+    betaj[,i] <- as.numeric(m$coefficients)
     
-    prediciones[,i]= as.numeric(m$fitted.values)
+    prediciones_in[,i] <- as.numeric(m$fitted.values)
+    
+    if(!is.null(xout)) {
+      prediciones_out[,i] <- as.matrix(predict.glm(m, 
+                                newdata = data.frame(xout), type="response"))
+    }
     residuos[,i]= aux
     
     # Compute the Multiple R-squared for each quantile:
@@ -76,15 +94,30 @@ survey2wassersteinmodel <- function(formula=formula, data_analysis_svy=data_anal
   print(t - proc.time())
   
   # check if the predictions are quantiles
-  source("cuadratico.R", local = knitr::knit_global())
-  indt <- apply(prediciones, 1, function(x) {all(diff(x)>= 0)==FALSE})
-  for(j in 1:length(indt)) {
-    if(indt[j]==TRUE){
-      prediciones[j,]<- cuadratico(matrix(prediciones[j,], nrow = 1))
+  indt_in <- apply(prediciones_in, 1, function(x) {all(diff(x)>= 0)==FALSE})
+  if(!is.null(xout)) {
+    indt_out <- apply(prediciones_out, 1, function(x) {all(diff(x)>= 0)==FALSE})
+  }
+  
+  for(j in 1:length(indt_in)) {
+    if(indt_in[j]==TRUE) {
+      prediciones_in2[j,]<- cuadratico(matrix(prediciones_in[j,], nrow = 1))
+    } else {
+      prediciones_in2[j,]<- prediciones_in[j,]
     }
   }
   
-  media1 = apply(w*objetofda$data, 2, sum)
+  if(!is.null(xout)) {
+    for(j in 1:length(indt_out)) {
+      if(indt_out[j]==TRUE) {
+        prediciones_out[j,]<- cuadratico(matrix(prediciones_out[j,], nrow = 1))
+      } else {
+        prediciones_out[j,]<- prediciones_out[j,]
+      }
+    }
+  }
+  
+  media1 <- apply(w*objetofda$data, 2, sum)
   for (i in 1:nrow(objetofda$data)) {
     residuos2[i,]<- objetofda$data[i,]- media1
   }
@@ -98,7 +131,16 @@ survey2wassersteinmodel <- function(formula=formula, data_analysis_svy=data_anal
   
   rownames(betaj) <- names(m$coefficients)
   
-  return(list("r2"=r2, "betaj"=betaj, "predicciones"= prediciones,
-              "residuos"= residuos, "R2_vector"=r2vec))
-  
+  if(!is.null(xout)) {
+  return(list("r2"=r2, "betaj"=betaj, "predicciones_In"= prediciones_in,
+              "projection_In" = prediciones_in2,
+              "predicciones_Out"= prediciones_out,
+              "residuos"= residuos, "R2_vector"= r2vec))
+  } else {
+    return(list("r2"=r2, "betaj"=betaj, "predicciones_In"= prediciones_in,
+                "projection_In" = prediciones_in2,
+                "residuos"= residuos, "R2_vector"= r2vec))
+  }
+   
 }
+
