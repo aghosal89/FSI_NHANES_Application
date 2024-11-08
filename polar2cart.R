@@ -1,11 +1,12 @@
-## The following are auxiliary functions.
+## This is a function to compute the p-dimensional cartesian coordinates from 
+## given polar coordinates in (p-1) dimension and radius.
 
-# This is a function to compute the p-dimensional cartesian coordinates from 
-# given polar coordinates in (p-1) dimension and radius.
-# Inputs: 1) eta  - a (p-1) dimensional vector
-#         2) r    - radius of the polar coordinates (set default, r=1)
+## Inputs: 
 
-# codes below were written for p=2,3,4,5; which can be generalized.
+# 1) eta  - a (p-1) dimensional vector.
+# 2) r    - radius of the polar coordinates (set default, r=1).
+
+# codes below were written for p= 2,3,4,5; which can be generalized.
 
 polar2cart <- function(eta, r  = 1) {
   # read the length (p-1)
