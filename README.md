@@ -6,16 +6,16 @@
 
 #### Description: 
 
-   This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
+     This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
 
 #### Input: 
 
-   - cartesian coordinates in p-dimensional space.
+     - cartesian coordinates in p-dimensional space.
 
 #### Outputs:
 
-   - r      :  the radius of the polar coordinates.
-   - eta    :  the vector of polar coordinates with length (p-1).
+     - r      :  the radius of the polar coordinates.
+     - eta    :  the vector of polar coordinates with length (p-1).
 
 
 ## polar2cart.R
