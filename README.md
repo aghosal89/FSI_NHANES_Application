@@ -22,55 +22,55 @@
 
 #### Description: 
 
-This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' function above.
+   This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' function above.
 
 #### Inputs:
 
- - 	eta    : a (p-1) dimensional vector.
- - 	r      : radius of the polar coordinates (set default, r=1).
+    - 	eta    : a (p-1) dimensional vector.
+    - 	r      : radius of the polar coordinates (set default, r=1).
 
 #### Output: 
 
-- cartesian coordinates in p-dimensional space.
+   - cartesian coordinates in p-dimensional space.
 
- ## cudratico.R
+## cudratico.R
 
 #### Description:
 
-This function projects the model predictions into the space of quantiles, the L^2 - Wasserstein space by solving a quadratic programing problem.
+   This function projects the model predictions into the space of quantiles, the L^2 - Wasserstein space by solving a quadratic programing problem.
 
 #### Inputs:   
 
- - prediciones  : model predictions of the GLM.
- - cotainferior : lower limit of the quantiles.
- - cotasuperior : upper limit of the quantiles.
+    - prediciones  : model predictions of the GLM.
+    - cotainferior : lower limit of the quantiles.
+    - cotasuperior : upper limit of the quantiles.
 
 #### Output: 
 
-a matrix of same dimension as the input matrix ‘prediciones’, of which the rows are projected onto the space of quantiles.
+   a matrix of same dimension as the input matrix ‘prediciones’, of which the rows are projected onto the space of quantiles.
 
 ## survey2wassersteinmodel_2.R
 
 #### Description: 
 
-This function computes the performance metrics, estimates the beta functional parameters, residuals of the model utilizing the survey design proposed by NHANES.
+   This function computes the performance metrics, estimates the beta functional parameters, residuals of the model utilizing the survey design proposed by NHANES.
 
 #### Inputs:
 
- - formula            : a character representing the formula for regression.
- - data_analysis_svy  : a survey GLM object. 
- - objetofda          : the functional data representation of the response quantiles.
- - xout		             : a matrix of order n1 x p whose columns are the same as those of the input covariate matrix in ‘data_analysis_svy’ above, the number of rows n1 being the observation held out, to perform prediction.
+   - formula            : a character representing the formula for regression.
+   - data_analysis_svy  : a survey GLM object. 
+   - objetofda          : the functional data representation of the response quantiles.
+   - xout		             : a matrix of order n1 x p whose columns are the same as those of the input covariate matrix in ‘data_analysis_svy’ above, the number of rows n1 being the observation held out, to perform prediction.
 
 #### Outputs: 
 
- - r^2               : the coefficient of determination (R-squared) of the fitted model.
- - betaj             : functional beta coefficients of the fitted regression models. 
- - Predicciones_In   : the prediction of regression model before projection into the 2-Wasserstein space of distributions.
- - Projection_In     : the projections into the 2-Wasserstein space of distributions.
- - Predictions_Out   : the out-of-sample prediction of regression model after projection to 2-Wasserstein space.
- - residuos          : the residuals of the fitted model obtained for each point on the grid [0,1].
- - r2vec             : a vector of length same as number of columns in ‘predicciones’ above, containing the multiple R-squared for each percentile.
+   - r^2               : the coefficient of determination (R-squared) of the fitted model.
+   - betaj             : functional beta coefficients of the fitted regression models. 
+   - Predicciones_In   : the prediction of regression model before projection into the 2-Wasserstein space of distributions.
+   - Projection_In     : the projections into the 2-Wasserstein space of distributions.
+   - Predictions_Out   : the out-of-sample prediction of regression model after projection to 2-Wasserstein space.
+   - residuos          : the residuals of the fitted model obtained for each point on the grid [0,1].
+   - r2vec             : a vector of length same as number of columns in ‘predicciones’ above, containing the multiple R-squared for each percentile.
 
 ## wn_cost.R
 
@@ -102,53 +102,53 @@ This function computes the performance metrics, estimates the beta functional pa
 
 #### Inputs:
 
- - qin            :  an nxm matrix whose rows are the quantiles corresponding to a distribution
- - qpred          :  an nxm matrix whose rows are predicted quantiles for the Y above.
- - tt             :  an equidistant grid of points on [0,1] of length m for quantiles.
- - q              :  number of covariates in the model.
- - Survey_weights :  Survey weights used for the individuals in NHANES study.
+   - qin            :  an nxm matrix whose rows are the quantiles corresponding to a distribution
+   - qpred          :  an nxm matrix whose rows are predicted quantiles for the Y above.
+   - tt             :  an equidistant grid of points on [0,1] of length m for quantiles.
+   - q              :  number of covariates in the model.
+   - Survey_weights :  Survey weights used for the individuals in NHANES study.
 
 #### Outputs: 
 
- -	Fréchet R-squared (Frechet_R2).
- -	Adjusted Fréchet R-squared (Adj_Frechet_R2).
+   -	Fréchet R-squared (Frechet_R2).
+   -	Adjusted Fréchet R-squared (Adj_Frechet_R2).
 
 ## PLFSI_model.R
 
 #### Description: 
 
-This function fits the PL-FSI model to the distributional responses.
+   This function fits the PL-FSI model to the distributional responses.
 
 #### Sourcing The functions from this repository
 
-•	wn_cost.R
-•	polar2cart.R
-•	cart2polar.R
-•	survey2wassersteinmodel_2.R
-•	cuadratico.R
+   •	wn_cost.R
+   •	polar2cart.R
+   •	cart2polar.R
+   •	survey2wassersteinmodel_2.R
+   •	cuadratico.R
 
 The descriptions of these functions are as mentioned above.
 
 #### Inputs:           
 
- - tt          : length m grid spanning [0, 1], used as grid for quantile functions.
- - datosfda    : nxm matrix of response quantile functions on grid tt.
- - si_vars     : a p-vector of variables' names to be considered in the Single Index part.
- - linear_vars : a q-vector of variables' names to be considered in the linear part.
- - formula_lv  : a character of length=1, the formula of the covariates in the linear part
- - nsp         : integer giving the number of starting points in each dimension to be used by optim. A lattice of points will be created by constructing an equally spaced grid for each of the (p - 1) hyperspherical coordinates used to represent theta in the optimization. Default is 3.
- - L           : a list of integers specifying which starting points to use. If L = 0 (default), all of the starting points in the lattice will be utilized. Otherwise, L of these will be chosen by row number. If L = -1, the user will have to input a matrix whose rows are the starting points.
- - etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization for estimating theta. This is input only if L=-1.
- - datosx      : the dataset of n whose columns include the covariates, survey variables of the model.
- - sp          : order of spline.
- - dfs         : degrees of freedem of the spline.
+   - tt          : length m grid spanning [0, 1], used as grid for quantile functions.
+   - datosfda    : nxm matrix of response quantile functions on grid tt.
+   - si_vars     : a p-vector of variables' names to be considered in the Single Index part.
+   - linear_vars : a q-vector of variables' names to be considered in the linear part.
+   - formula_lv  : a character of length=1, the formula of the covariates in the linear part
+   - nsp         : integer giving the number of starting points in each dimension to be used by optim. A lattice of points will be created by constructing an equally spaced grid for    each of the (p - 1) hyperspherical coordinates used to represent theta in the optimization. Default is 3.
+   - L           : a list of integers specifying which starting points to use. If L = 0 (default), all of the starting points in the lattice will be utilized. Otherwise, L of these     will be chosen by row number. If L = -1, the user will have to input a matrix whose rows are the starting points.
+   - etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization for estimating theta. This is input only if L=-1.
+   - datosx      : the dataset of n whose columns include the covariates, survey variables of the model.
+   - sp          : order of spline.
+   - dfs         : degrees of freedem of the spline.
 
 #### Outputs:
 
- - 	thetaHat  : length p vector giving the estimated coefficient
- - 	fnvalue   : achieved minimum value of the criterion function for estimating theta
- - 	etaStart  : matrix with (p - 1) columns, each row indicating a unique starting value used in optimization for estimating theta
- - 	optInf    : list containing information about optimization routine for each starting point.
+  - thetaHat  : length p vector giving the estimated coefficient
+  - fnvalue   : achieved minimum value of the criterion function for estimating theta
+  - etaStart  : matrix with (p - 1) columns, each row indicating a unique starting value used in optimization for estimating theta
+  - optInf    : list containing information about optimization routine for each starting point.
 
 
 # PLFSI regression model
