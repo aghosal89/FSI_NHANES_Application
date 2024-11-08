@@ -152,7 +152,7 @@ The descriptions of these functions are as mentioned above.
 
 PLFSI regression model
 
-To run the main PLFSI model run the “AnalysisAge20to80_PLFSI_noTAC.R”, which computes the model with the participants in the age range 20 - 80 years and BMI range 18.5 - 40. For the hybrid nature of the model, we considered the covariates Age and BMI in the non-linear part, and the covariates Sex, Ethnicity, HEI in the linear part, also considered the interaction between the covariates Sex and Ethnicity.
+          To run the main PLFSI model run the “AnalysisAge20to80_PLFSI_noTAC.R”, which computes the model with the participants in the age range 20 - 80 years and BMI range 18.5 - 40. For the hybrid nature of the model, we considered the covariates Age and BMI in the non-linear part, and the covariates Sex, Ethnicity, HEI in the linear part, also considered the interaction between the covariates Sex and Ethnicity.
 
 Sources: 
 
@@ -163,7 +163,7 @@ Sources:
 
 Input:   
 
-       The dataset ‘datosalex(1).csv’ file can be obtained from the link.
+       The dataset ‘datosalex(1).csv’ file can be obtained from the repository.
 
 Outputs:
 
