@@ -79,15 +79,15 @@ This is the cost function for estimating the index parameter obtained from equat
 
 #### Inputs: 
 
-•	et             : index parameter in polar coordinates
-•	datosfda     : an nxm matrix as the response whose each row represents an observation, each column represents a quantile, t from [0,1].
-•	datosx          : a data frame with n rows whose columns include the covariates for the model as well as the variables for survey design.
-•	linear_vars : the names of the p covariates for the linear part of model included in datosx.
-•	si_vars          : the names of the q covariates for the SI part of model included in datosx.
-•	formula_lv  : a character of length=1, the formula of the covariates in the linear part.
-•	tt                      : the equidistant grid on [0,1] of length m.
-•	sp                    : the degree of polynomial considered for spline regression.
-•	dfs                   : degrees of freedom as an alternative to specifying the knots.
+ -	et          : index parameter in polar coordinates
+ -	datosfda    : an nxm matrix as the response whose each row represents an observation, each column represents a quantile, t from [0,1].
+ -	datosx      : a data frame with n rows whose columns include the covariates for the model as well as the variables for survey design.
+ -	linear_vars : the names of the p covariates for the linear part of model included in datosx.
+ -	si_vars     : the names of the q covariates for the SI part of model included in datosx.
+ -	formula_lv  : a character of length=1, the formula of the covariates in the linear part.
+ -	tt          : the equidistant grid on [0,1] of length m.
+ -	sp          : the degree of polynomial considered for spline regression.
+ -	dfs         : degrees of freedom as an alternative to specifying the knots.
 
 #### Output: 
 
@@ -101,16 +101,16 @@ This function is to compute the Fréchet R-squared and the adjusted Fréchet R-s
 
 #### Inputs:
 
-•	qin            :  an nxm matrix whose rows are the quantiles corresponding to a distribution
-•	qpred          :  an nxm matrix whose rows are predicted quantiles for the Y above. 
-•	tt             :  an equidistant grid of points on [0,1] of length m for quantiles.
-•	q              :  number of covariates in the model.
-•	Survey_weights :  Survey weights used for the individuals in NHANES study.
+ - qin            :  an nxm matrix whose rows are the quantiles corresponding to a distribution
+ - qpred          :  an nxm matrix whose rows are predicted quantiles for the Y above.
+ - tt             :  an equidistant grid of points on [0,1] of length m for quantiles.
+ - q              :  number of covariates in the model.
+ - Survey_weights :  Survey weights used for the individuals in NHANES study.
 
 #### Outputs: 
 
-•	Fréchet R-squared (Frechet_R2).
-•	Adjusted Fréchet R-squared (Adj_Frechet_R2).
+ -	Fréchet R-squared (Frechet_R2).
+ -	Adjusted Fréchet R-squared (Adj_Frechet_R2).
 
 ## PLFSI_model.R
 
@@ -130,24 +130,24 @@ The descriptions of these functions are as mentioned above.
 
 #### Inputs:           
 
-•	tt          : length m grid spanning [0, 1], used as grid for quantile functions.
-•	datosfda    : nxm matrix of response quantile functions on grid tt.
-•	si_vars     : a p-vector of variables' names to be considered in the Single Index part.
-•	linear_vars : a q-vector of variables' names to be considered in the linear part.
-•	formula_lv  : a character of length=1, the formula of the covariates in the linear part
-•	nsp         : integer giving the number of starting points in each dimension to be used by optim. A lattice of points will be created by constructing an equally spaced grid for each of the (p - 1) hyperspherical coordinates used to represent theta in the optimization. Default is 3.
-•	 L          : a list of integers specifying which starting points to use. If L = 0 (default), all of the starting points in the lattice will be utilized. Otherwise, L of these will be chosen by row number. If L = -1, the user will have to input a matrix whose rows are the starting points.
-•	etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization for estimating theta. This is input only if L=-1. 
-•	datosx      : the dataset of n whose columns include the covariates, survey variables of the model.
-•	sp          : order of spline.
-•	dfs         : degrees of freedem of the spline.
+ - tt          : length m grid spanning [0, 1], used as grid for quantile functions.
+ - datosfda    : nxm matrix of response quantile functions on grid tt.
+ - si_vars     : a p-vector of variables' names to be considered in the Single Index part.
+ - linear_vars : a q-vector of variables' names to be considered in the linear part.
+ - formula_lv  : a character of length=1, the formula of the covariates in the linear part
+ - nsp         : integer giving the number of starting points in each dimension to be used by optim. A lattice of points will be created by constructing an equally spaced grid for each of the (p - 1) hyperspherical coordinates used to represent theta in the optimization. Default is 3.
+ - L           : a list of integers specifying which starting points to use. If L = 0 (default), all of the starting points in the lattice will be utilized. Otherwise, L of these will be chosen by row number. If L = -1, the user will have to input a matrix whose rows are the starting points.
+ - etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization for estimating theta. This is input only if L=-1.
+ - datosx      : the dataset of n whose columns include the covariates, survey variables of the model.
+ - sp          : order of spline.
+ - dfs         : degrees of freedem of the spline.
 
 #### Outputs:
 
-•	thetaHat  : length p vector giving the estimated coefficient
-•	fnvalue     : achieved minimum value of the criterion function for estimating theta
-•	etaStart    : matrix with (p - 1) columns, each row indicating a unique starting value used in optimization for estimating theta
-•	optInf         : list containing information about optimization routine for each starting point.
+ - 	thetaHat  : length p vector giving the estimated coefficient
+ - 	fnvalue   : achieved minimum value of the criterion function for estimating theta
+ - 	etaStart  : matrix with (p - 1) columns, each row indicating a unique starting value used in optimization for estimating theta
+ - 	optInf    : list containing information about optimization routine for each starting point.
 
 
 PLFSI regression model
