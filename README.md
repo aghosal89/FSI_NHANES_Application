@@ -1,17 +1,17 @@
-## Functions used for model
+# Functions used for model
 
 First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the files from this repository. The following are the descriptions for running the main model Partially Linear Fréchet Single Index Model (PL-FSI) and performing other tasks.
 
-1.	cart2polar.R
+ ### cart2polar.R
 
-Description: This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
+##### Description: This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
 
-Input: cartesian coordinates in p-dimensional space.
+##### Input: cartesian coordinates in p-dimensional space.
 
-# Outputs:
+##### Outputs:
 
-•	r      :  the radius of the polar coordinates.
-•	eta    :  the vector of polar coordinates with length (p-1).
+  - r      :  the radius of the polar coordinates.
+  - eta    :  the vector of polar coordinates with length (p-1).
 
 
 2.	polar2cart.R
