@@ -73,31 +73,32 @@ This function computes the performance metrics, estimates the beta functional pa
  - r2vec             : a vector of length same as number of columns in ‘predicciones’ above, containing the multiple R-squared for each percentile.
 
 ## wn_cost.R
+
 #### Description: 
 
-This is the cost function for estimating the index parameter obtained from equation 9 in the main document.
+    This is the cost function for estimating the index parameter obtained from equation 9 in the main document.
 
 #### Inputs: 
 
- -	et          : index parameter in polar coordinates
- -	datosfda    : an nxm matrix as the response whose each row represents an observation, each column represents a quantile, t from [0,1].
- -	datosx      : a data frame with n rows whose columns include the covariates for the model as well as the variables for survey design.
- -	linear_vars : the names of the p covariates for the linear part of model included in datosx.
- -	si_vars     : the names of the q covariates for the SI part of model included in datosx.
- -	formula_lv  : a character of length=1, the formula of the covariates in the linear part.
- -	tt          : the equidistant grid on [0,1] of length m.
- -	sp          : the degree of polynomial considered for spline regression.
- -	dfs         : degrees of freedom as an alternative to specifying the knots.
+    -	et          : index parameter in polar coordinates
+    -	datosfda    : an nxm matrix as the response whose each row represents an observation, each column represents a quantile, t from [0,1].
+    -	datosx      : a data frame with n rows whose columns include the covariates for the model as well as the variables for survey design.
+    -	linear_vars : the names of the p covariates for the linear part of model included in datosx.
+    -	si_vars     : the names of the q covariates for the SI part of model included in datosx.
+    -	formula_lv  : a character of length=1, the formula of the covariates in the linear part.
+    -	tt          : the equidistant grid on [0,1] of length m.
+    -	sp          : the degree of polynomial considered for spline regression.
+    -	dfs         : degrees of freedom as an alternative to specifying the knots.
 
 #### Output: 
 
-The mean square prediction error as a function of the Index parameter.
+   The mean square prediction error as a function of the Index parameter.
 
 ## adj_fr_r2.R
 
 #### Description: 
 
-This function is to compute the Fréchet R-squared and the adjusted Fréchet R-squared from the models.
+   This function is to compute the Fréchet R-squared and the adjusted Fréchet R-squared from the models.
 
 #### Inputs:
 
@@ -150,16 +151,16 @@ The descriptions of these functions are as mentioned above.
  - 	optInf    : list containing information about optimization routine for each starting point.
 
 
-PLFSI regression model
+# PLFSI regression model
 
     To run the main PLFSI model run the “AnalysisAge20to80_PLFSI_noTAC.R”, which computes the model with the participants in the age range 20 - 80 years and BMI range 18.5 - 40. For the hybrid nature of the model, we considered the covariates Age and BMI in the non-linear part, and the covariates Sex, Ethnicity, HEI in the linear part, also considered the interaction between the covariates Sex and Ethnicity.
 
 Sources: 
 
-•	adj_fr_r2.R
-•	PLFSI_model.R
-•	survey2wassersteinmodel_2.R
-•	wn_cost.R
+   •	adj_fr_r2.R
+   •	PLFSI_model.R
+   •	survey2wassersteinmodel_2.R
+   •	wn_cost.R
 
 Input:   
 
@@ -167,20 +168,20 @@ Input:
 
 Outputs:
 
-•	‘Theta_Hat.csv’: the .csv file contaning the 2 x 1 estimated index parameter for the Single Index part of the model.
-•	‘Output_Age20to80_noTAC_residuals.csv’: The model residuals obtained for every order of quantile t.  
-•	‘Predictions_before_projection.csv’: The model predictions obtained for every order of quantile t. 
-•	‘Predictions_after_projection.csv’: The prediction obtained in ‘Predictions_before_projection.csv’ and projected into the 2-Wasserstein space.
-•	‘Output_Age20to80_noTAC_betas.csv’: Estimated beta coefficients for every order of quantile t. 
-•	‘Output_Age20to80_noTAC_rnames.csv’: The estimated parameters in the model.
-•	‘Output_Age20to80_noTAC_betas_UCL.csv’: pointwise 95% Upper Confidence limits of estimated parameters.
-•	‘Output_Age20to80_noTAC_betas_LCL.csv’: pointwise 95% Lower Confidence limits of estimated parameters.
-•	‘Output_Age20to80_noTAC_betaeffects.csv’: pointwise estimate of the effects.
-•	‘Output_Age20to80_noTAC_betaeffects_UCL.csv’: pointwise 95% Upper Confidence limits of estimated effects.
-•	‘Output_Age20to80_noTAC_betaeffects_LCL.csv’: pointwise 95% Lower Confidence limits of estimated effects.
+   •	‘Theta_Hat.csv’: the .csv file contaning the 2 x 1 estimated index parameter for the Single Index part of the model.
+   •	‘Output_Age20to80_noTAC_residuals.csv’: The model residuals obtained for every order of quantile t.  
+   •	‘Predictions_before_projection.csv’: The model predictions obtained for every order of quantile t. 
+   •	‘Predictions_after_projection.csv’: The prediction obtained in ‘Predictions_before_projection.csv’ and projected into the 2-Wasserstein space.
+   •	‘Output_Age20to80_noTAC_betas.csv’: Estimated beta coefficients for every order of quantile t. 
+   •	‘Output_Age20to80_noTAC_rnames.csv’: The estimated parameters in the model.
+   •	‘Output_Age20to80_noTAC_betas_UCL.csv’: pointwise 95% Upper Confidence limits of estimated parameters.
+   •	‘Output_Age20to80_noTAC_betas_LCL.csv’: pointwise 95% Lower Confidence limits of estimated parameters.
+   •	‘Output_Age20to80_noTAC_betaeffects.csv’: pointwise estimate of the effects.
+   •	‘Output_Age20to80_noTAC_betaeffects_UCL.csv’: pointwise 95% Upper Confidence limits of estimated effects.
+   •	‘Output_Age20to80_noTAC_betaeffects_LCL.csv’: pointwise 95% Lower Confidence limits of estimated effects.
 
 
-Comparison of the Out-Sample performances of the PLFSI, PLF and GF regression models
+# Comparison of the Out-Sample performances of the PLFSI, PLF and GF regression models
 
 To compare the PLF (Partially Linear Fréchet), GF (Global Fréchet) and the PLFSI (Partially Linear Fréchet Single Index) models w.r.t. the out-sample performances, run the following file:
 
@@ -219,7 +220,7 @@ Outputs:
 
 
 
-Evaluation of the PLFSI model through Bootstrap
+# Evaluation of the PLFSI model through Bootstrap
 
 We performed 100 bootstrap simulations of the PLFSI model to re-estimate the model parameters and their linear combinations. To perform this exercise run the file 
 
@@ -253,6 +254,6 @@ Outputs:
 
 
 
-Plots and figures in the document
+# Plots and figures in the document
 
     To run all the plots and figures in the document run the script Plots.R.
