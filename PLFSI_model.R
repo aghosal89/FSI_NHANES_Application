@@ -1,11 +1,10 @@
-
 # This function fits the partially-linear Frechet Single Index model to the 
 # distributional responses. The files 'wn_cost.R', 'polar2cart.R', 'cart2polar.R',
-# 'survey2wassersteinmodel.R', 'cuadratico.R' have to be sourced prior to running 
+# 'survey2wassersteinmodel_2.R', 'cuadratico.R' have to be sourced prior to running 
 # the codes in this script.
 
 ## Inputs:
-# 
+ 
 # tt          - length m grid spanning [0, 1], used as grid for quantile functions
 # datosfda    - nxm matrix of response quantile functions on grid tt
 # si_vars     - A p-vector of variables' names to be considered in the Single Index part.
@@ -28,7 +27,7 @@
 # dfs         - degrees of freedem of the spline
 
 ## Output: A List with the following elements
-#
+
 # thetaHat - length p vector giving the estimated coefficient
 # fnvalue  - achieved minimum value of the criterion function for estimating theta
 # etaStart - matrix with (p - 1) columns, each row indicating a unique starting value
@@ -36,11 +35,23 @@
 # optInf   - list containing information about optimization routine for each
 #            starting point
 
+
+## Requires sourcing the following functions from the respository
+
+# 1) adj_fr_r2.R
+# 2) polar2cart.R
+# 3) wn_cost.R
+# 4) survey2wassersteinmodel.R
+
+## Requires loading the following R packages (in addition to the libraries required for the functions above)
+
+# 1) numbers
+# 2) optimParallel
+            
 PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL, 
                   datosfda = NULL, tt = NULL, datosx=NULL, nsp = 3, L = 0, 
                   etaStart = NULL, sp=NULL, dfs=NULL) {
   
-  library("numbers")
   # Perform checks
   if(is.null(si_vars)){
     stop('Must provide covariates for the single index part of the model')
@@ -73,7 +84,7 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL,
     nsp <- L
   }
   
-  # Create grid of starting values for optimization
+  # Create a grid of starting values for optimization
   
   if(L!=-1) {
   # compute dimension of covariate in single index
@@ -109,10 +120,11 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL,
   cl <- makeCluster(2)     # set the number of processor cores
   setDefaultCluster(cl=cl)
   
-  source("wn_cost.R", local= knitr::knit_global())
   # main optimization loop over starting values
+    
   for(k in 1:nrow(as.matrix(etaStart))) {
     print(k)
+    
     WnOpt <- optimParallel(par = as.matrix(etaStart)[k,], fn = wn_cost, method = "L-BFGS-B",
                            lower = -pi/2, upper = pi/2, control = optim_optns, 
                            datosfda=datosfda, datosx = datosx, linear_vars=linear_vars, 
@@ -127,12 +139,11 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL,
   }
   
   # the optimizer, i.e. thetaHat 
-  source("polar2cart.R", local = knitr::knit_global())
   thetaHat <- polar2cart(etaMin[which.min(WnMin),], 1)
   
   optvalue <- min(WnMin)  # updated to find the minimized Wn in training set
   
-  bs_fun <- as.matrix(datosx[,si_vars])%*%thetaHat
+  bs_fun <- as.matrix(datosx[,si_vars]) %*% (thetaHat)
   
   bs_data<- data.frame(bs(x=bs_fun, degree=sp, df=dfs))
   colnames(bs_data) <- paste("BS", seq(1:ncol(bs_data)), sep = "")
@@ -146,15 +157,17 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL,
                                  weights= ~survey_wt, data = data_temp, nest = TRUE)
   
   objetofda= fdata(datosfda,argvals = tt)
-  source("survey2wassersteinmodel.R", local =knitr::knit_global())
-  res<- survey2wassersteinmodel(formula=formula, data_analysis_svy, objetofda=objetofda)
+  res<- survey2wassersteinmodel_2(formula=formula, data_analysis_svy, objetofda=objetofda)
   
   q_n<- nrow(res$betaj)
-  source("adj_fr_r2.R", local = knitr::knit_global())
-  adjusted_fr_r2<- adj_fr_r2(qin=datosfda, qpred=res$predicciones, tt=tt, q=q_n, survey_weights= datosx$survey_wt)
-  return(list(thetaHat = thetaHat, converge= converge, fnvalue=optvalue, etaStart= etaStart, optInf = optInf,
-              R2= res$r2, betaj= res$betaj, predictions= res$predicciones, residuals= res$residuos,
-              Frechet_R2= adjusted_fr_r2$Frechet_R2, Adj_Frechet_R2= adjusted_fr_r2$Adj_Frechet_R2,
+  adjusted_fr_r2 <-adj_fr_r2(qin=datosfda, qpred=res$projection_In, tt=tt, q=q_n, 
+                              survey_weights= datosx$survey_wt)
+  
+  return(list(thetaHat = thetaHat, converge= converge, fnvalue=optvalue, 
+              etaStart= etaStart, optInf = optInf, R2= res$r2, betaj= res$betaj, 
+              predictions= res$projection_In, residuals= res$residuos,
+              Frechet_R2= adjusted_fr_r2$Frechet_R2, 
+              Adj_Frechet_R2 = adjusted_fr_r2$Adj_Frechet_R2,
               R2_vector= res$R2_vector))
   
 }
