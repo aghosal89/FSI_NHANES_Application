@@ -6,7 +6,7 @@ First create a folder in your computer and keep it as the working directory for 
 
 ##### Description: 
 
- - This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
+ This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
 
 ##### Input: 
 
@@ -20,7 +20,9 @@ First create a folder in your computer and keep it as the working directory for 
 
 ### polar2cart.R
 
-Description: This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' function above.
+##### Description: 
+
+This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' function above.
 
 Inputs:
 •	eta : a (p-1) dimensional vector.
