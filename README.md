@@ -255,4 +255,4 @@ Outputs:
 
 Plots and figures in the document
 
-To run all the plots and figures in the document run the script Plots.R.
+    To run all the plots and figures in the document run the script Plots.R.
