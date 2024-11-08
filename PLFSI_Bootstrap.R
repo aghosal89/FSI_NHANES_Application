@@ -5,7 +5,6 @@
 # GENDER, Ethnicity, HEI in the linear part.
 
 # Set your R directory
-setwd("~/Documents/2024_09_21_Aritra_codeForMainAnalysis")
 
 # Read the libraries
 library("optimParallel")
