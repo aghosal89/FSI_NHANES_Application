@@ -1,12 +1,18 @@
 
-# This function computes polar coordinates from the cartesian coordinates in
-# p-dimensional euclidean space. 
-# Input  :  1) x   - is the cartesian coordinate, p-dimensional vector of reals.
-# Outputs:  1) r   - the radius of the polar coordinates.
-#           2) eta - the vector of polar coordinates with length (p-1).
+## This function computes polar coordinates from the cartesian coordinates in
+## p-dimensional euclidean space. 
+
+## Input:  
+
+# 1) x : is the cartesian coordinate, p-dimensional vector of reals.
+
+## Outputs:  
+
+# 1) r   : the radius of the polar coordinates.
+# 2) eta : the vector of polar coordinates with length (p-1).
 
 # This performs the reverse operation of the 'polar2cart' function above. This 
-# function is written for p=2,3,4,5; which can be generalized.
+# function is written for p = 2,3,4,5; which can be generalized.
 
 cart2polar <- function(x) {
   # read dimension of the cartesian coordinate:
