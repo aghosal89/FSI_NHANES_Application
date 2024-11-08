@@ -2,11 +2,15 @@
 
 First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the files from this repository. The following are the descriptions for running the main model Partially Linear Fréchet Single Index Model (PL-FSI) and performing other tasks.
 
- ### cart2polar.R
+### cart2polar.R
 
-##### Description: This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
+##### Description: 
 
-##### Input: cartesian coordinates in p-dimensional space.
+ - This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
+
+##### Input: 
+
+ - cartesian coordinates in p-dimensional space.
 
 ##### Outputs:
 
@@ -14,7 +18,7 @@ First create a folder in your computer and keep it as the working directory for 
   - eta    :  the vector of polar coordinates with length (p-1).
 
 
-2.	polar2cart.R
+### polar2cart.R
 
 Description: This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' function above.
 
