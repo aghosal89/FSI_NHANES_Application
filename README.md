@@ -4,15 +4,15 @@ First create a folder in your computer and keep it as the working directory for 
 
 ### cart2polar.R
 
-##### Description: 
+#### Description: 
 
- This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
+This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
 
-##### Input: 
+#### Input: 
 
  - cartesian coordinates in p-dimensional space.
 
-##### Outputs:
+#### Outputs:
 
   - r      :  the radius of the polar coordinates.
   - eta    :  the vector of polar coordinates with length (p-1).
