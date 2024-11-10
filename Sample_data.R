@@ -1,12 +1,12 @@
-######
-# Select the observations for the training/testing splits for the data 
-######
+########
+# Select the observations for the training/testing splits for the models: PLFSI/ PLF/ GF
+##
 
 # Read the libraries
 library('sampling')
 
 # Set your R directory
-setwd("~/Documents/2024_09_21_Aritra_codeForMainAnalysis")
+
 
 # read the dataset
 datos= read.csv("datosalex(1).csv")
