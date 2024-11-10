@@ -3,7 +3,7 @@
 library('surveybootstrap')
 
 # Set your R directory
-setwd("~/Documents/2024_09_21_Aritra_codeForMainAnalysis")
+
 
 # read the dataset
 datos <- read.csv("datosalex(1).csv")
