@@ -154,6 +154,26 @@ The descriptions of these functions are as mentioned above.
     - optInf    : list containing information about optimization routine for each starting point.
 
 
+# Sources of large datasets
+
+The following datasets are to be stored in the working directory you created. Due to large size, their links are provided.
+
+    - For the main dataset 'datosalex(1).csv' visit the link:
+    
+    https://drive.google.com/file/d/1NeCDuD-rnhOL7H4nD4d5GxvI-Qaa3CDN/view?usp=share_link
+
+    - (For plotting) the datasets 'predictions_before_projection.csv' and 'predictions_after_projection.csv' are respectively obtained from the following links:
+
+    https://drive.google.com/file/d/1oato7Qf7_F9D8wS-Gl9Zyb-1T6pzQFC5/view?usp=share_link
+
+    https://drive.google.com/file/d/1AfMrWa4332yyrQxeZK68cIS0bQ2oOPWc/view?usp=share_link
+
+    - (For plotting) the dataset 'Output_Age20to80_noTAC_residuals.csv' is obtained from the link:
+
+    https://drive.google.com/file/d/1RZxsw5YKK7h1Y9h2dwt1BMhGWkHLCLGz/view?usp=share_link
+
+
+
 # PLFSI regression model
 
       To run the main PLFSI model run the “AnalysisAge20to80_PLFSI_noTAC.R”, which computes the model with the participants in the age range 20 - 80 years and BMI range 18.5 - 40. For the hybrid nature of the model, we considered the covariates Age and BMI in the non-linear part, and the covariates Sex, Ethnicity, HEI in the linear part, also considered the interaction between the covariates Sex and Ethnicity.
