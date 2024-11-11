@@ -84,7 +84,6 @@ datosx$survey_id <- as.factor(datosx$survey_id)
 datosacel<- read.csv("datosaritra.csv")
 # read data frame containing the quantile distributions of individual physical 
 # activity representations
-datosfda<- read.csv("Y.csv")[,-1]
 obs= c()
 
 for(i in 1:8){
