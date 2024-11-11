@@ -41,12 +41,11 @@
 # 1) adj_fr_r2.R
 # 2) polar2cart.R
 # 3) wn_cost.R
-# 4) survey2wassersteinmodel.R
+# 4) survey2wassersteinmodel_2.R
 
 ## Requires loading the following R packages (in addition to the libraries required for the functions above)
 
 # 1) numbers
-# 2) optimParallel
             
 PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL, 
                   datosfda = NULL, tt = NULL, datosx=NULL, nsp = 3, L = 0, 
@@ -117,19 +116,20 @@ PLFSI_model <- function(si_vars = NULL, linear_vars = NULL, formula_lv=NULL,
   #  -sum(dnorm(x=x, mean=par[1], sd=par[2], log=TRUE))
   #}
   
-  cl <- makeCluster(2)     # set the number of processor cores
-  setDefaultCluster(cl=cl)
+  #cl <- makeCluster(2)     # set the number of processor cores
+  #setDefaultCluster(cl=cl)
   
   # main optimization loop over starting values
-    
+  #source("survey2wassersteinmodel_2.R", local =TRUE)
+  #source("polar2cart.R", local =TRUE)
+  
   for(k in 1:nrow(as.matrix(etaStart))) {
     print(k)
     
-    WnOpt <- optimParallel(par = as.matrix(etaStart)[k,], fn = wn_cost, method = "L-BFGS-B",
+    WnOpt <- optim(par = as.matrix(etaStart)[k,], fn = wn_cost, method = "L-BFGS-B",
                            lower = -pi/2, upper = pi/2, control = optim_optns, 
                            datosfda=datosfda, datosx = datosx, linear_vars=linear_vars, 
-                           si_vars=si_vars, tt=tt, sp=sp, dfs=dfs, formula_lv=formula_lv,
-                           parallel=list(forward=TRUE))
+                           si_vars=si_vars, tt=tt, sp=sp, dfs=dfs, formula_lv=formula_lv)
     
     optInf[[k]] <- WnOpt
     
