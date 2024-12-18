@@ -257,7 +257,7 @@ for (i2 in 1:nrow(Sample_data)) {
   
 }
 
-write.csv(MSPEs, "MSPEs_PLF.csv")
+write.csv(MSPEs_plf, "MSPEs_PLF.csv")
 write.csv(Frechet_R2, "Frechet_R2_PLF.csv")
 write.csv(Adj_Frechet_R2, "Adj_Frechet_R2_PLF.csv")
 write.csv(R2, "Traditional_R2_PLF.csv")
