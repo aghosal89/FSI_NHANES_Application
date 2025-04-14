@@ -4,7 +4,7 @@ First create a folder in your computer and keep it as the working directory for 
 
 Download primary data file "datosalex(1).csv" from the following link:
 
-      - https://drive.google.com/file/d/1NeCDuD-rnhOL7H4nD4d5GxvI-Qaa3CDN/view?usp=share_link
+- https://drive.google.com/file/d/1NeCDuD-rnhOL7H4nD4d5GxvI-Qaa3CDN/view?usp=share_link
 
 
 The following additional large csv files will be created by running the code, but you may download them from the following links if you wish to plot without running the code. They are to be stored in the working directory you created. Due to large size, their links are provided.
@@ -34,12 +34,12 @@ This function computes polar coordinates from the cartesian coordinates in p-dim
 
 #### Input: 
 
-     - cartesian coordinates in p-dimensional space.
+- cartesian coordinates in p-dimensional space.
 
 #### Outputs:
 
-     - r      :  the radius of the polar coordinates.
-     - eta    :  the vector of polar coordinates with length (p-1).
+- r      :  the radius of the polar coordinates.
+- eta    :  the vector of polar coordinates with length (p-1).
 
 ## polar2cart.R
 
@@ -49,12 +49,12 @@ This is a function to compute the p-dimensional cartesian coordinates from the g
 
 #### Inputs:
 
-       - 	eta    : a (p-1) dimensional vector.
-       - 	r      : radius of the polar coordinates (set default, r=1).
+- eta    : a (p-1) dimensional vector.
+- r      : radius of the polar coordinates (set default, r=1).
 
 #### Output: 
 
-       - cartesian coordinates in p-dimensional space.
+- cartesian coordinates in p-dimensional space.
 
 ## cudratico.R
 
@@ -64,13 +64,13 @@ This function projects the model predictions into the space of quantiles, the L^
 
 #### Inputs:   
 
-      - prediciones  : model predictions of the GLM.
-      - cotainferior : lower limit of the quantiles.
-      - cotasuperior : upper limit of the quantiles.
+- prediciones  : model predictions of the GLM.
+- cotainferior : lower limit of the quantiles.
+- cotasuperior : upper limit of the quantiles.
 
 #### Output: 
 
-      A matrix of same dimension as the input matrix ‘prediciones’, of which the rows are projected onto the space of quantiles.
+A matrix of same dimension as the input matrix ‘prediciones’, of which the rows are projected onto the space of quantiles.
 
 ## survey2wassersteinmodel_2.R
 
@@ -80,20 +80,20 @@ This function computes the performance metrics, estimates the beta functional pa
 
 #### Inputs:
 
-     - formula            : a character representing the formula for regression.
-     - data_analysis_svy  : a survey GLM object. 
-     - objetofda          : the functional data representation of the response quantiles.
-     - xout		      : a matrix of order n1 x p whose columns are the same as those of the input covariate matrix in ‘data_analysis_svy’ above, the number of rows n1 being the observation held out, to perform prediction.
+- formula            : a character representing the formula for regression.
+- data_analysis_svy  : a survey GLM object. 
+- objetofda          : the functional data representation of the response quantiles.
+- xout	         : a matrix of order n1 x p whose columns are the same as those of the input covariate matrix in ‘data_analysis_svy’ above, the number of rows n1 being the observation held out, to perform prediction.
 
 #### Outputs: 
 
-     - r^2               : the coefficient of determination (R-squared) of the fitted model.
-     - betaj             : functional beta coefficients of the fitted regression models. 
-     - Predicciones_In   : the prediction of regression model before projection into the 2-Wasserstein space of distributions.
-     - Projection_In     : the projections into the 2-Wasserstein space of distributions.
-     - Predictions_Out   : the out-of-sample prediction of regression model after projection to 2-Wasserstein space.
-     - residuos          : the residuals of the fitted model obtained for each point on the grid [0,1].
-     - r2vec             : a vector of length same as number of columns in ‘predicciones’ above, containing the multiple R-squared for each percentile.
+- r^2               : the coefficient of determination (R-squared) of the fitted model.
+- betaj             : functional beta coefficients of the fitted regression models. 
+- Predicciones_In   : the prediction of regression model before projection into the 2-Wasserstein space of distributions.
+- Projection_In     : the projections into the 2-Wasserstein space of distributions.
+- Predictions_Out   : the out-of-sample prediction of regression model after projection to 2-Wasserstein space.
+- residuos          : the residuals of the fitted model obtained for each point on the grid [0,1].
+- r2vec             : a vector of length same as number of columns in ‘predicciones’ above, containing the multiple R-squared for each percentile.
 
 ## wn_cost.R
 
@@ -103,19 +103,19 @@ This is the cost function for estimating the index parameter obtained from equat
 
 #### Inputs: 
 
-      -	et          : index parameter in polar coordinates
-      -	datosfda    : an nxm matrix as the response whose each row represents an observation, each column represents a quantile, t from [0,1].
-      -	datosx      : a data frame with n rows whose columns include the covariates for the model as well as the variables for survey design.
-      -	linear_vars : the names of the p covariates for the linear part of model included in datosx.
-      -	si_vars     : the names of the q covariates for the SI part of model included in datosx.
-      -	formula_lv  : a character of length=1, the formula of the covariates in the linear part.
-      -	tt          : the equidistant grid on [0,1] of length m.
-      -	sp          : the degree of polynomial considered for spline regression.
-      -	dfs         : degrees of freedom as an alternative to specifying the knots.
+- et          : index parameter in polar coordinates
+- datosfda    : an nxm matrix as the response whose each row represents an observation, each column represents a quantile, t from [0,1].
+- datosx      : a data frame with n rows whose columns include the covariates for the model as well as the variables for survey design.
+- linear_vars : the names of the p covariates for the linear part of model included in datosx.
+- si_vars     : the names of the q covariates for the SI part of model included in datosx.
+- formula_lv  : a character of length=1, the formula of the covariates in the linear part.
+- tt          : the equidistant grid on [0,1] of length m.
+- sp          : the degree of polynomial considered for spline regression.
+- dfs         : degrees of freedom as an alternative to specifying the knots.
 
 #### Output: 
 
-     The mean square prediction error as a function of the Index parameter.
+The mean square prediction error as a function of the Index parameter.
 
 ## adj_fr_r2.R
 
@@ -125,16 +125,16 @@ This function is to compute the Fréchet R-squared and the adjusted Fréchet R-s
 
 #### Inputs:
 
-     - qin            :  an nxm matrix whose rows are the quantiles corresponding to a distribution
-     - qpred          :  an nxm matrix whose rows are predicted quantiles for the Y above.
-     - tt             :  an equidistant grid of points on [0,1] of length m for quantiles.
-     - q              :  number of covariates in the model.
-     - Survey_weights :  Survey weights used for the individuals in NHANES study.
+- qin            :  an nxm matrix whose rows are the quantiles corresponding to a distribution
+- qpred          :  an nxm matrix whose rows are predicted quantiles for the Y above.
+- tt             :  an equidistant grid of points on [0,1] of length m for quantiles.
+- q              :  number of covariates in the model.
+- Survey_weights :  Survey weights used for the individuals in NHANES study.
 
 #### Outputs: 
 
-     -	Fréchet R-squared (Frechet_R2).
-     -	Adjusted Fréchet R-squared (Adj_Frechet_R2).
+- Fréchet R-squared (Frechet_R2).
+- Adjusted Fréchet R-squared (Adj_Frechet_R2).
 
 ## PLFSI_model.R
 
@@ -144,30 +144,30 @@ This function fits the PL-FSI model to the distributional responses.
 
 #### Sourcing The functions from this repository
 
-     -	wn_cost.R
-     -	polar2cart.R
-     -	cart2polar.R
-     -	survey2wassersteinmodel_2.R
-     -	cuadratico.R
+- wn_cost.R
+- polar2cart.R
+- cart2polar.R
+- survey2wassersteinmodel_2.R
+- cuadratico.R
 
 The descriptions of these functions are as mentioned above.
 
 #### Inputs:           
 
-     - tt          : length m grid spanning [0, 1], used as grid for quantile functions.
-     - datosfda    : nxm matrix of response quantile functions on grid tt.
-     - si_vars     : a p-vector of variables' names to be considered in the Single Index part.
-     - linear_vars : a q-vector of variables' names to be considered in the linear part.
-     - formula_lv  : a character of length=1, the formula of the covariates in the linear part
-     - nsp         : integer giving the number of starting points in each dimension to be used by optim. A lattice of points will be created by constructing an equally spaced grid for    each of the (p - 1) hyperspherical coordinates used to represent theta in the optimization. Default is 3.
+- tt          : length m grid spanning [0, 1], used as grid for quantile functions.
+- datosfda    : nxm matrix of response quantile functions on grid tt.
+- si_vars     : a p-vector of variables' names to be considered in the Single Index part.
+- linear_vars : a q-vector of variables' names to be considered in the linear part.
+- formula_lv  : a character of length=1, the formula of the covariates in the linear part
+- nsp         : integer giving the number of starting points in each dimension to be used by optim. A lattice of points will be created by constructing an equally spaced grid for    each of the (p - 1) hyperspherical coordinates used to represent theta in the optimization. Default is 3.
      
-     - L           : a list of integers specifying which starting points to use. If L = 0 (default), all of the starting points in the lattice will be utilized. Otherwise, L of these     will be chosen by row number. If L = -1, the user will have to input a matrix whose rows are the starting points.
+- L           : a list of integers specifying which starting points to use. If L = 0 (default), all of the starting points in the lattice will be utilized. Otherwise, L of these     will be chosen by row number. If L = -1, the user will have to input a matrix whose rows are the starting points.
      
-     - etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization for estimating theta. This is input only if L=-1.
+- etaStart    : a matrix with (p-1) columns each row indicating a unique starting value used in optimization for estimating theta. This is input only if L=-1.
      
-     - datosx      : the dataset of n whose columns include the covariates, survey variables of the model.
-     - sp          : order of spline.
-     - dfs         : degrees of freedem of the spline.
+- datosx      : the dataset of n whose columns include the covariates, survey variables of the model.
+- sp          : order of spline.
+- dfs         : degrees of freedem of the spline.
 
 #### Outputs:
 
