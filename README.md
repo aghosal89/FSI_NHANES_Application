@@ -1,13 +1,13 @@
-# Functions used for model
+# Create the R directory for this project:
 
-     First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the files from this repository. The following are the descriptions for running the main model Partially Linear Fréchet Single Index Model (PL-FSI) and performing other tasks.
+First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the files from this repository. The following are the descriptions for running the main model Partially Linear Fréchet Single Index Model (PL-FSI) and performing other tasks.
 
-      Also download primary data file "datosalex(1).csv" from the following link:
+Download primary data file "datosalex(1).csv" from the following link:
 
       - https://drive.google.com/file/d/1NeCDuD-rnhOL7H4nD4d5GxvI-Qaa3CDN/view?usp=share_link
 
 
-     The following additional large csv files will be created by running the code, but you may download them from the following links if you wish to plot without running the code. They are to be stored in the working directory you created. Due to large size, their links are provided.
+The following additional large csv files will be created by running the code, but you may download them from the following links if you wish to plot without running the code. They are to be stored in the working directory you created. Due to large size, their links are provided.
 
     - (For plotting) the datasets 'predictions_before_projection.csv' and 'predictions_after_projection.csv' are respectively obtained from the following links:
 
@@ -20,7 +20,12 @@
     https://drive.google.com/file/d/1RZxsw5YKK7h1Y9h2dwt1BMhGWkHLCLGz/view?usp=share_link
 
      It is also worth noting that all .csv files within the repository except "datosaritra.csv" and "datosalex(1).csv", are created by running the codes.
-     
+
+
+# Functions used for model
+
+Here follows a description of the primary methods code files that are called by the actigraph density response analysis code: 
+
 ## cart2polar.R
 
 #### Description: 
