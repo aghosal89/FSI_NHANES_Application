@@ -7,7 +7,7 @@
       - https://drive.google.com/file/d/1NeCDuD-rnhOL7H4nD4d5GxvI-Qaa3CDN/view?usp=share_link
 
 
-     The following additional large csv files will be created by running the code, but you may download them from the following links if you wish to plot without running the code, they are to be stored in the working directory you created. Due to large size, their links are provided.
+     The following additional large csv files will be created by running the code, but you may download them from the following links if you wish to plot without running the code. They are to be stored in the working directory you created. Due to large size, their links are provided.
 
     - (For plotting) the datasets 'predictions_before_projection.csv' and 'predictions_after_projection.csv' are respectively obtained from the following links:
 
@@ -18,6 +18,8 @@
     - (For plotting) the dataset 'Output_Age20to80_noTAC_residuals.csv' is obtained from the link:
 
     https://drive.google.com/file/d/1RZxsw5YKK7h1Y9h2dwt1BMhGWkHLCLGz/view?usp=share_link
+
+     It is also worth noting that all .csv files within the repository except "datosaritra.csv" and "datosalex(1).csv", are created by running the codes.
      
 ## cart2polar.R
 
