@@ -6,7 +6,6 @@ Download primary data file "datosalex(1).csv" from the following link:
 
 - https://drive.google.com/file/d/1NeCDuD-rnhOL7H4nD4d5GxvI-Qaa3CDN/view?usp=share_link
 
-
 The following additional large csv files will be created by running the code, but you may download them from the following links if you wish to plot without running the code. They are to be stored in the working directory you created. Due to large size, their links are provided.
 
 - (For plotting) the datasets 'predictions_before_projection.csv' and 'predictions_after_projection.csv' are respectively obtained from the following links:
@@ -171,10 +170,10 @@ The descriptions of these functions are as mentioned above.
 
 #### Outputs:
 
-    - thetaHat  : length p vector giving the estimated coefficient
-    - fnvalue   : achieved minimum value of the criterion function for estimating theta
-    - etaStart  : matrix with (p - 1) columns, each row indicating a unique starting value used in optimization for estimating theta
-    - optInf    : list containing information about optimization routine for each starting point.
+- thetaHat  : length p vector giving the estimated coefficient
+- fnvalue   : achieved minimum value of the criterion function for estimating theta
+- etaStart  : matrix with (p - 1) columns, each row indicating a unique starting value used in optimization for estimating theta
+- optInf    : list containing information about optimization routine for each starting point.
     
 
 # PLFSI regression model
@@ -183,28 +182,28 @@ To run the main PLFSI model run the “AnalysisAge20to80_PLFSI_noTAC.R”, which
 
 Sources: 
 
-     -	adj_fr_r2.R
-     -    PLFSI_model.R
-     -    survey2wassersteinmodel_2.R
-     -	wn_cost.R
+- adj_fr_r2.R
+- PLFSI_model.R
+- survey2wassersteinmodel_2.R
+- wn_cost.R
 
 Input:   
 
-       The dataset ‘datosalex(1).csv’ file can be obtained from the repository.
+- The dataset ‘datosalex(1).csv’ file can be obtained from the repository.
 
 Outputs:
 
-     •	‘Theta_Hat.csv’: the .csv file contaning the 2 x 1 estimated index parameter for the Single Index part of the model.
-     •	‘Output_Age20to80_noTAC_residuals.csv’: The model residuals obtained for every order of quantile t.  
-     •	‘Predictions_before_projection.csv’: The model predictions obtained for every order of quantile t. 
-     •	‘Predictions_after_projection.csv’: The prediction obtained in ‘Predictions_before_projection.csv’ and projected into the 2-Wasserstein space.
-     •	‘Output_Age20to80_noTAC_betas.csv’: Estimated beta coefficients for every order of quantile t. 
-     •	‘Output_Age20to80_noTAC_rnames.csv’: The estimated parameters in the model.
-     •	‘Output_Age20to80_noTAC_betas_UCL.csv’: pointwise 95% Upper Confidence limits of estimated parameters.
-     •	‘Output_Age20to80_noTAC_betas_LCL.csv’: pointwise 95% Lower Confidence limits of estimated parameters.
-     •	‘Output_Age20to80_noTAC_betaeffects.csv’: pointwise estimate of the effects.
-     •	‘Output_Age20to80_noTAC_betaeffects_UCL.csv’: pointwise 95% Upper Confidence limits of estimated effects.
-     •	‘Output_Age20to80_noTAC_betaeffects_LCL.csv’: pointwise 95% Lower Confidence limits of estimated effects.
+- ‘Theta_Hat.csv’: the .csv file contaning the 2 x 1 estimated index parameter for the Single Index part of the model.
+- ‘Output_Age20to80_noTAC_residuals.csv’: The model residuals obtained for every order of quantile t.  
+- ‘Predictions_before_projection.csv’: The model predictions obtained for every order of quantile t. 
+- ‘Predictions_after_projection.csv’: The prediction obtained in ‘Predictions_before_projection.csv’ and projected into the 2-Wasserstein space.
+- ‘Output_Age20to80_noTAC_betas.csv’: Estimated beta coefficients for every order of quantile t. 
+- ‘Output_Age20to80_noTAC_rnames.csv’: The estimated parameters in the model.
+- ‘Output_Age20to80_noTAC_betas_UCL.csv’: pointwise 95% Upper Confidence limits of estimated parameters.
+- ‘Output_Age20to80_noTAC_betas_LCL.csv’: pointwise 95% Lower Confidence limits of estimated parameters.
+- ‘Output_Age20to80_noTAC_betaeffects.csv’: pointwise estimate of the effects.
+- ‘Output_Age20to80_noTAC_betaeffects_UCL.csv’: pointwise 95% Upper Confidence limits of estimated effects.
+- ‘Output_Age20to80_noTAC_betaeffects_LCL.csv’: pointwise 95% Lower Confidence limits of estimated effects.
 
 
 # Comparison of the Out-Sample performances of the PLFSI, PLF and GF regression models
@@ -221,23 +220,23 @@ which outputs file “Sample_data.csv” containing a 40 x 462 matrix whose entr
 
 #### Sources: 
 
-    -	adj_fr_r2.R
-    -	PLFSI_model.R
-    -	survey2wassersteinmodel_2.R
-    -	wn_cost.R
+- adj_fr_r2.R
+- PLFSI_model.R
+- survey2wassersteinmodel_2.R
+- wn_cost.R
 
 #### Inputs:
 
-    -	The ‘Sample_data.csv’ can be found at the link.
-    -	The dataset ‘datosalex(1).csv’ file can be obtained from the link mentioned above.
+- The ‘Sample_data.csv’ can be found at the link.
+- The dataset ‘datosalex(1).csv’ file can be obtained from the link mentioned above.
 
 Outputs:
 
-    -	“Theta_hat_PLFSI.csv”: Contains a matrix of order 40 x 2, whose rows are the estimated Single-Index parameters for each of the 40 data splits.
-    -     “Theta_convergence.csv”: Contains a matrix of order 40 x 4, whose rows are the numbers indicating convergence and successful estimation of the SI parameter for each of the 4 starting values. Here ‘0’ would mean convergence of the estimation algorithm
-    -     “MSPEs_PLFSI.csv”: Contains a vector of length 40 that contains the MSPE of out-sample prediction of the PLFSI model for each of the 40 splits.
-    -     “MSPEs_GF.csv”: Contains a vector of length 40 of the MSPE of the out-sample prediction of the Global Fréchet regression model for each of the 40 splits.
-    -     “MSPE_PLF.csv”: Contains a vector of 40 MSPE values corresponding to the out-sample prediction of the PLF model corresponding to the 40 splits.
+- “Theta_hat_PLFSI.csv”: Contains a matrix of order 40 x 2, whose rows are the estimated Single-Index parameters for each of the 40 data splits.
+- “Theta_convergence.csv”: Contains a matrix of order 40 x 4, whose rows are the numbers indicating convergence and successful estimation of the SI parameter for each of the 4 starting values. Here ‘0’ would mean convergence of the estimation algorithm
+- “MSPEs_PLFSI.csv”: Contains a vector of length 40 that contains the MSPE of out-sample prediction of the PLFSI model for each of the 40 splits.
+- “MSPEs_GF.csv”: Contains a vector of length 40 of the MSPE of the out-sample prediction of the Global Fréchet regression model for each of the 40 splits.
+- “MSPE_PLF.csv”: Contains a vector of 40 MSPE values corresponding to the out-sample prediction of the PLF model corresponding to the 40 splits.
 
 
 # Evaluation of the PLFSI model through Bootstrap
@@ -256,21 +255,21 @@ which takes as input the “datosalex(1).csv” (link above) and as output provi
 
 #### Sources: 
 
-    - adj_fr_r2.R
-    - PLFSI_model.R
-    - survey2wassersteinmodel_2.R
-    - wn_cost.R
+- adj_fr_r2.R
+- PLFSI_model.R
+- survey2wassersteinmodel_2.R
+- wn_cost.R
 
 #### Input:   
 
-    - The dataset “datosalex(1).csv”.
-    - “Boot_survey_data.csv”.
-    - “Output_Age20to80_noTAC_betaeffects.csv”. 
+- The dataset “datosalex(1).csv”.
+- “Boot_survey_data.csv”.
+- “Output_Age20to80_noTAC_betaeffects.csv”. 
 
 #### Outputs:
 
-    - “Bootstrap_lower95_ConfidenceBound.csv”: the 95% lower confidence bounds for the estimated model parameter effects.
-    - “Bootstrap_upper95_ConfidenceBound.csv”: the 95% upper confidence bounds for the estimated model parameter effects.
+- “Bootstrap_lower95_ConfidenceBound.csv”: the 95% lower confidence bounds for the estimated model parameter effects.
+- “Bootstrap_upper95_ConfidenceBound.csv”: the 95% upper confidence bounds for the estimated model parameter effects.
 
 
 # Plots and figures in the document
