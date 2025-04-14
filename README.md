@@ -9,17 +9,17 @@ Download primary data file "datosalex(1).csv" from the following link:
 
 The following additional large csv files will be created by running the code, but you may download them from the following links if you wish to plot without running the code. They are to be stored in the working directory you created. Due to large size, their links are provided.
 
-    - (For plotting) the datasets 'predictions_before_projection.csv' and 'predictions_after_projection.csv' are respectively obtained from the following links:
+- (For plotting) the datasets 'predictions_before_projection.csv' and 'predictions_after_projection.csv' are respectively obtained from the following links:
 
     https://drive.google.com/file/d/1oato7Qf7_F9D8wS-Gl9Zyb-1T6pzQFC5/view?usp=share_link
 
     https://drive.google.com/file/d/1AfMrWa4332yyrQxeZK68cIS0bQ2oOPWc/view?usp=share_link
 
-    - (For plotting) the dataset 'Output_Age20to80_noTAC_residuals.csv' is obtained from the link:
+- (For plotting) the dataset 'Output_Age20to80_noTAC_residuals.csv' is obtained from the link:
 
     https://drive.google.com/file/d/1RZxsw5YKK7h1Y9h2dwt1BMhGWkHLCLGz/view?usp=share_link
 
-     It is also worth noting that all .csv files within the repository except "datosaritra.csv" and "datosalex(1).csv", are created by running the codes.
+It is also worth noting that all .csv files within the repository except "datosaritra.csv" and "datosalex(1).csv", are created by running the codes.
 
 
 # Functions used for model
@@ -30,7 +30,7 @@ Here follows a description of the primary methods code files that are called by 
 
 #### Description: 
 
-     This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
+This function computes polar coordinates from the cartesian coordinates in p-dimensional Euclidean space for the dimensions p = 2, 3, 4, 5.
 
 #### Input: 
 
@@ -41,12 +41,11 @@ Here follows a description of the primary methods code files that are called by 
      - r      :  the radius of the polar coordinates.
      - eta    :  the vector of polar coordinates with length (p-1).
 
-
 ## polar2cart.R
 
 #### Description: 
 
-      This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' function above.
+This is a function to compute the p-dimensional cartesian coordinates from the given polar coordinates in (p-1) dimension and radius r. Computes for p=2,3,4,5. This performs the inverse operation of the 'cart2polar' function above.
 
 #### Inputs:
 
@@ -61,7 +60,7 @@ Here follows a description of the primary methods code files that are called by 
 
 #### Description:
 
-      This function projects the model predictions into the space of quantiles, the L^2 - Wasserstein space by solving a quadratic programing problem.
+This function projects the model predictions into the space of quantiles, the L^2 - Wasserstein space by solving a quadratic programing problem.
 
 #### Inputs:   
 
@@ -77,7 +76,7 @@ Here follows a description of the primary methods code files that are called by 
 
 #### Description: 
 
-      This function computes the performance metrics, estimates the beta functional parameters, residuals of the model utilizing the survey design proposed by NHANES.
+This function computes the performance metrics, estimates the beta functional parameters, residuals of the model utilizing the survey design proposed by NHANES.
 
 #### Inputs:
 
@@ -100,7 +99,7 @@ Here follows a description of the primary methods code files that are called by 
 
 #### Description: 
 
-      This is the cost function for estimating the index parameter obtained from equation 9 in the main document.
+This is the cost function for estimating the index parameter obtained from equation 9 in the main document.
 
 #### Inputs: 
 
@@ -122,7 +121,7 @@ Here follows a description of the primary methods code files that are called by 
 
 #### Description: 
 
-      This function is to compute the Fréchet R-squared and the adjusted Fréchet R-squared from the models.
+This function is to compute the Fréchet R-squared and the adjusted Fréchet R-squared from the models.
 
 #### Inputs:
 
@@ -141,7 +140,7 @@ Here follows a description of the primary methods code files that are called by 
 
 #### Description: 
 
-     This function fits the PL-FSI model to the distributional responses.
+This function fits the PL-FSI model to the distributional responses.
 
 #### Sourcing The functions from this repository
 
@@ -180,7 +179,7 @@ The descriptions of these functions are as mentioned above.
 
 # PLFSI regression model
 
-      To run the main PLFSI model run the “AnalysisAge20to80_PLFSI_noTAC.R”, which computes the model with the participants in the age range 20 - 80 years and BMI range 18.5 - 40. For the hybrid nature of the model, we considered the covariates Age and BMI in the non-linear part, and the covariates Sex, Ethnicity, HEI in the linear part, also considered the interaction between the covariates Sex and Ethnicity.
+To run the main PLFSI model run the “AnalysisAge20to80_PLFSI_noTAC.R”, which computes the model with the participants in the age range 20 - 80 years and BMI range 18.5 - 40. For the hybrid nature of the model, we considered the covariates Age and BMI in the non-linear part, and the covariates Sex, Ethnicity, HEI in the linear part, also considered the interaction between the covariates Sex and Ethnicity.
 
 Sources: 
 
@@ -210,15 +209,15 @@ Outputs:
 
 # Comparison of the Out-Sample performances of the PLFSI, PLF and GF regression models
 
-    To compare the PLF (Partially Linear Fréchet), GF (Global Fréchet) and the PLFSI (Partially Linear Fréchet Single Index) models w.r.t. the out-sample performances, run the following file:
+To compare the PLF (Partially Linear Fréchet), GF (Global Fréchet) and the PLFSI (Partially Linear Fréchet Single Index) models w.r.t. the out-sample performances, run the following file:
 
     “Combined_PLFSI_PLF_GF_performance_comparison.R”
 
-    First, we split the data into in-sample and out-sample parts so that 462 observations are held out chosen randomly without replacement, while the rest 4154 are considered for the in-sample model fitting of the data. We created 40 such splits, while fitting each of the three models PLF, PLFSI, GF in the training split and predicting the activity distributions for the held-out data. The Random split of the data is computed in the file:
+First, we split the data into in-sample and out-sample parts so that 462 observations are held out chosen randomly without replacement, while the rest 4154 are considered for the in-sample model fitting of the data. We created 40 such splits, while fitting each of the three models PLF, PLFSI, GF in the training split and predicting the activity distributions for the held-out data. The Random split of the data is computed in the file:
 
     “Sample_data.R”
 
-    which outputs file “Sample_data.csv” containing a 40 x 462 matrix whose entries represent the observation number that is to be held out into the out-sample for the corresponding split. 
+which outputs file “Sample_data.csv” containing a 40 x 462 matrix whose entries represent the observation number that is to be held out into the out-sample for the corresponding split. 
 
 #### Sources: 
 
@@ -243,15 +242,15 @@ Outputs:
 
 # Evaluation of the PLFSI model through Bootstrap
 
-    We performed 100 bootstrap simulations of the PLFSI model to re-estimate the model parameters and their linear combinations. To perform this exercise run the file 
+We performed 100 bootstrap simulations of the PLFSI model to re-estimate the model parameters and their linear combinations. To perform this exercise run the file 
 
     “PLFSI_Bootstrap.R”.
-
-    The bootstrap survey weight multipliers are created in the script:
+    
+The bootstrap survey weight multipliers are created in the script:
 
     “Survey_data_preparation.R”,
 
-    which takes as input the “datosalex(1).csv” (link above) and as output provides “Boot_survey_data.csv” available in the link, which contains the survey weight multipliers for each observation in the study.
+which takes as input the “datosalex(1).csv” (link above) and as output provides “Boot_survey_data.csv” available in the link, which contains the survey weight multipliers for each observation in the study.
 
     For the “PLFSI_bootstrap.R” script,
 
@@ -276,4 +275,4 @@ Outputs:
 
 # Plots and figures in the document
 
-    To run all the plots and figures in the document run the script Plots_colorchanged.R.
+To run all the plots and figures in the document run the script Plots_colorchanged.R.
