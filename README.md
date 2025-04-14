@@ -2,6 +2,10 @@
 
      First create a folder in your computer and keep it as the working directory for your RStudio operations. In that folder, download and save the files from this repository. The following are the descriptions for running the main model Partially Linear Fréchet Single Index Model (PL-FSI) and performing other tasks.
 
+      Also download primary data file "datosalex(1).csv" from the following link:
+
+      - https://drive.google.com/file/d/1NeCDuD-rnhOL7H4nD4d5GxvI-Qaa3CDN/view?usp=share_link
+
 ## cart2polar.R
 
 #### Description: 
@@ -157,10 +161,6 @@ The descriptions of these functions are as mentioned above.
 # Sources of large datasets
 
 The following datasets are to be stored in the working directory you created. Due to large size, their links are provided.
-
-    - For the main dataset 'datosalex(1).csv' visit the link:
-    
-    https://drive.google.com/file/d/1NeCDuD-rnhOL7H4nD4d5GxvI-Qaa3CDN/view?usp=share_link
 
     - (For plotting) the datasets 'predictions_before_projection.csv' and 'predictions_after_projection.csv' are respectively obtained from the following links:
 
